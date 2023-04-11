@@ -2,17 +2,22 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Posting
 
 
-def posting_detail_view(request):
-    request.method == "GET"
-    return render(request, '/posting_detail')
+def posting_detail_view(request, post_id):
+    if request.method == "GET":
+        posting = get_object_or_404(Posting, id=post_id)
+        context = {
+            'posting': posting
+        }
+        return render(request, 'posting/posting_detail.html', context)
+
 
 
 def posting_list(request, category=None):
     if category:
         posting_list = Posting.objects.filter(
-            category=category).order_by('-created_date')
+            category=category).order_by('-create_at')
     else:
-        posting_list = Posting.objects.all().order_by('-created_date')
+        posting_list = Posting.objects.all().order_by('-create_at')
 
     context = {
         'title': 'LIST',
@@ -20,7 +25,8 @@ def posting_list(request, category=None):
         'category': category,
     }
 
-    return render(request, 'posting_list.html', context)
+    return render(request, 'posting/posting_list.html', context)
+
 
 # 게시글 작성
 

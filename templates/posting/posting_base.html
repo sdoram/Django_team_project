@@ -11,7 +11,7 @@
             integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
             crossorigin="anonymous"></script>
     <style>
-				.title-center {
+        .title-center {
             text-align: center;
             margin-top: 50px;
         }
@@ -33,7 +33,6 @@
         }
         .navbar-brand{
             font-size: 14px;
-            
         }
         .container{
             background-color: gray; 
@@ -61,8 +60,11 @@
                     <a class="nav-link" href="..user/signup"> 회원가입 <span class="sr-only"></span></a>
                 </li>
             </ul>
+        </form>
     </div>
 </nav>
-
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
 </body>
 </html>

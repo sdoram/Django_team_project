@@ -1,6 +1,4 @@
-{% extends ‘posting_base.html’ %}
-
-{% extends 'postinging_base.html' %}
+{% extends 'posting/posting_base.html' %}
 
 {% block title %}
     {{ Posting.title }}
@@ -20,4 +18,5 @@
         </div>
         <br>
         <h3>댓글<h3>
+            {% endblock %}
         {% comment %} 여기서부터는 댓글 만들어주새요 한울님 {% endcomment %}
