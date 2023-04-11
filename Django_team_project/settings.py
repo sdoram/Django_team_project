@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'posting',
     'comment',
     'user',
+    'Django_team_project'
 ]
 
 MIDDLEWARE = [

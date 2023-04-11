@@ -1,0 +1,40 @@
+{% extends 'posting_base.html' %}
+
+{% block title %}
+    게시글 리스트
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>게시글 목록{% if category %} - {{ category }}{% endif %}</h2>
+        <div class="btn-group" role="group" aria-label="카테고리 선택">
+            <a class="btn btn-secondary{% if not category %} active{% endif %}" href="{% url 'posting_list' %}">전체</a>
+            <a class="btn btn-secondary{% if category == '코드리뷰' %} active{% endif %}" href="{% url 'posting_list' '코드리뷰' %}">코드리뷰</a>
+            <a class="btn btn-secondary{% if category == '취업진로' %} active{% endif %}" href="{% url 'posting_list' '취업진로' %}">취업진로</a>
+            <a class="btn btn-secondary{% if category == '개발공부' %} active{% endif %}" href="{% url 'posting_list' '개발공부' %}">개발공부</a>
+            <a class="btn btn-secondary{% if category == '잡담' %} active{% endif %}" href="{% url 'posting_list' '잡담' %}">잡담</a>
+            <a class="btn btn-secondary{% if category == '스터디' %} active{% endif %}" href="{% url 'posting_list' '스터디' %}">스터디</a>
+        </div>
+        <br><br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>작성일</th>
+                    <th>조회수</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posting_list %}
+                    <tr>
+                        <td><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></td>
+                        <td>{{ post.author }}</td>
+                        <td>{{ post.created_date }}</td>
+                        <td>{{ post.views }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
