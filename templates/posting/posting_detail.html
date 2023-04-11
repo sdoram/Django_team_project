@@ -1,0 +1,22 @@
+{% extends 'posting/posting_base.html' %}
+
+{% block title %}
+    {{ Posting.title }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>{{ Posting.title }}</h2>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ Posting.title }}</h5>
+                <p class="card-text">{{ Posting.main_content }}</p>
+                <p class="card-text">{{ Posting.created_at }}</p>
+                <p class="card-text">{{ Posting.updated_at }}</p>
+                <p class="card-text">{{ Posting.category }}</p>
+            </div>
+        </div>
+        <br>
+        <h3>댓글<h3>
+            {% endblock %}
+        {% comment %} 여기서부터는 댓글 만들어주새요 한울님 {% endcomment %}
