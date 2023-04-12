@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 
 def signup(request):
+    # 이미 로그인한 유저 메인페이지로 돌려보내기
     if request.method == 'GET':
         return render(request, 'user/signup.html')
     elif request.method == 'POST':
@@ -16,12 +17,12 @@ def signup(request):
         name = request.POST.get('name', None)
         email = request.POST.get('email', None)
         gender = request.POST.get('gender', None)
-
+        # password 불일치를 나타낼 수 있도록 변경
         if password != password2:
             return render(request, 'user/signup.html')
         else:
             exist_user = get_user_model().objects.filter(username=username)
-
+            # HttpResponse 이외의 방법으로 변경
             if exist_user:
                 return HttpResponse('이미 존재하는 유저입니다.')
             else:
@@ -34,6 +35,7 @@ def signup(request):
 
 
 def login(request):
+    # 이미 로그인한 유저 메인페이지로 돌려보내기
     if request.method == 'POST':
         username = request.POST.get('username', None)
         password = request.POST.get('password', None)
@@ -41,7 +43,7 @@ def login(request):
         me = auth.authenticate(request, username=username, password=password)
         if me is not None:
             auth.login(request, me)
-            return render(request, 'main.html')
+            return redirect('/main')
         else:
             return redirect('/user/login')
     elif request.method == 'GET':
