@@ -29,28 +29,30 @@ from .models import Posting
 
 def posting_list(request, category=None):
     if category:
-        posting_list = Posting.objects.filter(category=category).order_by('-create_at')
+        # 모델에서 choices 옵션으로 정의한 값('codereview')으로 필터링합니다.
+        posting_list = Posting.objects.filter(
+            category=category.lower()).order_by('-create_at')
     else:
         posting_list = Posting.objects.all().order_by('-create_at')
 
-    paginator = Paginator(posting_list, 6)  # 한 페이지당 6개의 게시글만 보여주도록 설정
-    page_number = request.GET.get('page')  # 현재 페이지 번호 가져오기
+    paginator = Paginator(posting_list, 6)  
+    page = request.GET.get('page')  
 
-    # 현재 페이지 번호가 유효하지 않으면 1페이지로 보여줌
     try:
-        page_obj = paginator.page(page_number)
+        posting_list = paginator.page(page)
     except PageNotAnInteger:
-        page_obj = paginator.page(1)
+        posting_list = paginator.page(1)
     except EmptyPage:
-        page_obj = paginator.page(paginator.num_pages)
+        posting_list = paginator.page(paginator.num_pages)
 
     context = {
         'title': 'LIST',
-        'posting_list': page_obj,
+        'posting_list': posting_list,
         'category': category,
     }
 
     return render(request, 'posting/posting_list.html', context)
+
 
 
 
