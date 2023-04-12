@@ -4,7 +4,7 @@ from user.models import UserModel
 class Posting(models.Model):
     username = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     post_id = models.ForeignKey('self', on_delete=models.CASCADE)
-    main_content = models.TextField()
+    main_content = models.TextField(null=True)
     create_at = models.DateField(auto_now_add=True)
     title = models.CharField(max_length=256)
     update_at = models.DateField(auto_now=True)
