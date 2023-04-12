@@ -57,6 +57,11 @@
             margin-right: 10px;
             color: white;
         }
+        /*회원가입 선택 사항*/
+        .terms_choice {
+            font-size: 13px;
+            color: lightgray;
+        }
     </style>
 </head>
 
@@ -72,10 +77,10 @@
             {% if not user.is_authenticated %}
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/user/login"> 회원가입 <span class="sr-only"></span></a>
+                        <a class="nav-link" href="/user/signup"> 회원가입 <span class="sr-only"></span></a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="/user/signup"> 로그인 <span class="sr-only"></span></a>
+                        <a class="nav-link" href="/user/login"> 로그인 <span class="sr-only"></span></a>
                     </li>
                 </ul>
             {% else %}
