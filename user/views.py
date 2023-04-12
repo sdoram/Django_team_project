@@ -53,11 +53,13 @@ def login(request):
     elif request.method == 'POST':
         username = request.POST.get('username', None)
         password = request.POST.get('password', None)
+        # 이전 페이지 url or main
+        next_url = request.GET.get('next') or '/main'
 
         me = auth.authenticate(request, username=username, password=password)
         if me is not None:
             auth.login(request, me)
-            return redirect('/main')
+            return redirect(next_url)
         else:
             return redirect('/user/login')
     elif request.method == 'GET':
@@ -67,9 +69,8 @@ def login(request):
 @login_required
 def logout(request):
     auth.logout(request)
-    # 로그아웃 시 원래 보고 있던 페이지로 돌려보내기
-    # next 찾아보기
-    return redirect('/user/login')
+    next_url = request.GET.get('next') or '/main'
+    return redirect(next_url)
 
 
 # 민영
