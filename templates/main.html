@@ -2,71 +2,527 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container timeline-container">
-        <div class="row">
-            <!-- 왼쪽 컬럼 -->
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
+<style>
+    /*메인 리스트박스*/
+    .main_post {
+        margin: 20px;
+        padding: 5px;
+        width: 500px;
+        height: 300px;
+        border-top: 1px solid rgb(185, 185, 185);
+        border-bottom: 1px solid rgb(185, 185, 185);
+        /*텍스트가 표시되는 영역을 벗어났을 때 남은 글자 안보이게 함*/
+        overflow: hidden;
+    }
 
-                    </div>
-                </div>
-            </div>
-            <!-- 오른 쪽 컬럼-->
-            <div class="col-md-7">
-                <!-- 글을 작성 하는 곳 -->
-                <div class="row mb-2">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <h5 class="mt-0">나의 이야기를 적어주세요</h5>
-                                        <p>
-                                        <form>
-                                            <div class="form-group mb-2">
-                                                <textarea class="form-control" style="resize: none" name='my-content' id="my-content"></textarea>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary" style="float:right;">작성하기</button>
-                                        </form>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <!-- 작성 된 글이 나오는 곳 -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <h5 class="mt-0">Media heading</h5>
-                                        <p>Will you do the same for me? It's time to face the music I'm no longer your
-                                            muse.
-                                            Heard it's
-                                            beautiful, be the judge and my girls gonna take a vote. I can feel a phoenix
-                                            inside
-                                            of me.
-                                            Heaven is
-                                            jealous of our love, angels are crying from up above. Yeah, you take me to
-                                            utopia.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    .main_post_div {
+        margin-bottom: 10px;
+    }
 
+    .main_post_list li {
+        list-style-type: none;
+        margin-bottom: 6px;
+        /*div 양쪽정렬*/
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .main_post_list li div {
+        display: inline-block;
+    }
+
+    .main_headline {
+        /*하이퍼링크 밑줄 없애기*/
+        text-decoration-line: none;
+        color: black;
+        font-size: 20px;
+        /*글씨 굵게*/
+        font-weight: bold;
+    }
+
+    #posting_list_id {
+        text-decoration-line: none;
+        color: black;
+        /*길이 제한*/
+        display: block;
+        width: 350px;
+        /*텍스트가 표시되는 영역을 벗어났을 때 남은 글자 안보이게 함*/
+        overflow: hidden;
+        /*생략기호 사용*/
+        text-overflow: ellipsis;
+        /*텍스트가 길어지면 줄 바꿈을 하지 않도록 함*/
+        white-space: nowrap;
+        
+    }
+</style>
+
+<!--코드리뷰-->
+<div class="main_posts">
+    <div class="main_post">
+        <div class="main_post_div">
+            <div class="main_headline_div">
+                <a class="main_headline" href="/">코드리뷰</a>
+                <hr style="border: solid 1px red; width: 15%; margin-top: 3px;">
             </div>
-            <div class="col-md-2"></div>
         </div>
-    </div>
+        <!--여기 리스트를 하나만 작성한 다음에 아래 착착붙게-->
+        <!--느낌 보려고 여러 <li> 붙여놓음-->
+        <div class="main_post_list">
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트1: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트2: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트3: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트4: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트5: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트6: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트7: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트8: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트9: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+        </div>
+    </div> <!--main_post-->
+    <div class="main_post">
+        <div class="main_post_div">
+            <div class="main_headline_div">
+                <a class="main_headline" href="/">취업진로</a>
+                <hr style="border: solid 1px red; width: 15%; margin-top: 3px;">
+            </div>
+        </div>
+        <!--여기 리스트를 하나만 작성한 다음에 아래 착착붙게-->
+        <!--느낌 보려고 여러 <li> 붙여놓음-->
+        <div class="main_post_list">
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트1: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트2: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트3: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트4: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트5: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트6: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트7: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트8: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트9: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+        </div>
+    </div> <!--main_post-->
+    <div class="main_post">
+        <div class="main_post_div">
+            <div class="main_headline_div">
+                <a class="main_headline" href="/">개발공부</a>
+                <hr style="border: solid 1px red; width: 15%; margin-top: 3px;">
+            </div>
+        </div>
+        <!--여기 리스트를 하나만 작성한 다음에 아래 착착붙게-->
+        <!--느낌 보려고 여러 <li> 붙여놓음-->
+        <div class="main_post_list">
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트1: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트2: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트3: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트4: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트5: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트6: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트7: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트8: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트9: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+        </div>
+    </div> <!--main_post-->
+    <div class="main_post">
+        <div class="main_post_div">
+            <div class="main_headline_div">
+                <a class="main_headline" href="/">커뮤니티</a>
+                <hr style="border: solid 1px red; width: 15%; margin-top: 3px;">
+            </div>
+        </div>
+        <!--여기 리스트를 하나만 작성한 다음에 아래 착착붙게-->
+        <!--느낌 보려고 여러 <li> 붙여놓음-->
+        <div class="main_post_list">
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트1: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트2: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트3: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트4: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트5: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트6: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트7: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트8: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트9: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+        </div>
+    </div> <!--main_post-->
+    <div class="main_post">
+        <div class="main_post_div">
+            <div class="main_headline_div">
+                <a class="main_headline" href="/">스터디</a>
+                <hr style="border: solid 1px red; width: 15%; margin-top: 3px;">
+            </div>
+        </div>
+        <!--여기 리스트를 하나만 작성한 다음에 아래 착착붙게-->
+        <!--느낌 보려고 여러 <li> 붙여놓음-->
+        <div class="main_post_list">
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트1: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트2: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트3: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트4: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트5: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트6: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트7: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트8: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+            <li>
+                <div class="posting_list_div">
+                    <!--클릭시 게시글로 넘어가게-->
+                    <a id="posting_list_id" href="#">리스트9: 여기는 코드리뷰의 최근 게시물 제목입니다.</a>
+                </div>
+                <div class="posting_id_div">
+                    <span class="posting_id">작성자id</span>
+                </div>
+            </li>
+        </div>
+    </div> <!--main_post-->
+</div><!--main_posts-->
+
 {% endblock %}
