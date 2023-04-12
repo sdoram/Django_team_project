@@ -27,9 +27,9 @@
             <tbody>
                 {% for post in posting_list %}
                     <tr>
-                        <td><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></td>
+                        <td><a href="{% url 'post_detail' post.post_id %}">{{ post.title }}</a></td>
                         <td>{{ post.author }}</td>
-                        <td>{{ post.created_date }}</td>
+                        <td>{{ post.created_at }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -38,8 +38,8 @@
         <div class="pagination">
             <span class="step-links">
                 {% if posting_list.has_previous %}
-                    <a href="?page=1">&laquo; first</a>
-                    <a href="?page={{ posting_list.previous_page_number }}">&lsaquo; prev</a>
+                    <a href="{% url 'posting_list' category=category %}?page=1">&laquo; first</a>
+                    <a href="{% url 'posting_list' category=category %}?page={{ posting_list.previous_page_number }}">&lsaquo; prev</a>
                 {% endif %}
         
                 <span class="current-page">
@@ -47,10 +47,11 @@
                 </span>
         
                 {% if posting_list.has_next %}
-                    <a href="?page={{ posting_list.next_page_number }}">next &rsaquo;</a>
-                    <a href="?page={{ posting_list.paginator.num_pages }}">last &raquo;</a>
+                    <a href="{% url 'posting_list' category=category %}?page={{ posting_list.next_page_number }}">next &rsaquo;</a>
+                    <a href="{% url 'posting_list' category=category %}?page={{ posting_list.paginator.num_pages }}">last &raquo;</a>
                 {% endif %}
             </span>
         </div>
+        
     </div>
 {% endblock %}

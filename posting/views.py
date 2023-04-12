@@ -7,45 +7,51 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 
-# def posting_detail_view(request, post_id):
-#     if request.method == "GET":
-#         posting = get_object_or_404(Posting, id=post_id)
-#         context = {
-#             'posting': posting
-#         }
-#         return render(request, 'posting/posting_detail.html', context)
-
-def posting_detail_view(request):
-    return render(request, 'posting/posting_detail.html')
+def posting_detail_view(request, post_id):
+    posting = get_object_or_404(Posting, post_id=post_id)
+    context = {
+        'posting': posting
+    }
+    return render(request, 'posting/posting_detail.html', context)
 
 
+# def posting_detail_view(request):
+#     return render(request, 'posting/posting_detail.html')
+
+
+
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render
+
+from .models import Posting
 
 
 def posting_list(request, category=None):
     if category:
-        posting_list = Posting.objects.filter(
-            category=category).order_by('-create_at')
+        posting_list = Posting.objects.filter(category=category).order_by('-create_at')
     else:
         posting_list = Posting.objects.all().order_by('-create_at')
 
     paginator = Paginator(posting_list, 6)  # 한 페이지당 6개의 게시글만 보여주도록 설정
-    page = request.GET.get('page')  # 현재 페이지 번호 가져오기
+    page_number = request.GET.get('page')  # 현재 페이지 번호 가져오기
 
     # 현재 페이지 번호가 유효하지 않으면 1페이지로 보여줌
     try:
-        posting_list = paginator.page(page)
+        page_obj = paginator.page(page_number)
     except PageNotAnInteger:
-        posting_list = paginator.page(1)
+        page_obj = paginator.page(1)
     except EmptyPage:
-        posting_list = paginator.page(paginator.num_pages)
+        page_obj = paginator.page(paginator.num_pages)
 
     context = {
         'title': 'LIST',
-        'posting_list': posting_list,
+        'posting_list': page_obj,
         'category': category,
     }
 
     return render(request, 'posting/posting_list.html', context)
+
 
 
 # 게시글 작성
