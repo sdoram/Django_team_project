@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .mypage_div {
+        /*크기설정*/
+        width: 500px;
+        height: 900px;
+        margin: 20px;
+    }
+    .mypage_profile_div {
+        /*세로가운데 정렬*/
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        /*자식 div들을 세로로 정렬할때!!*/
+        flex-direction: column;
+
+        /*크기설정*/
+        width: 500px;
+        height: 200px;
+        /*라운드*/
+        border-radius: 50px;
+        /*박스선*/
+        border: solid 1px;
+        margin-bottom: 20px;
+    }
+    .mypage_write_div {
+        /*세로가운데 정렬*/
+        display: flex;
+        align-items: left;
+        justify-content: center;
+
+        /*자식 div들을 세로로 정렬할때!!*/
+        flex-direction: column;
+
+        /*크기설정*/
+        width: 500px;
+        height: 400px;
+        /*라운드*/
+        border-radius: 50px;
+        /*박스선*/
+        border: solid 1px;
+    }
+    .mypage_profile_div div {
+        /*div 안 글자 가운데정렬*/
+        text-align: center;
+        display:inline-flex;
+        margin-bottom: 10px;
+    }
+    .mypage_write_div div {
+        /*div 안 글자 가운데정렬*/
+        color:black;
+        margin-left: 70px;
+        margin-bottom: 10px;
+    }
+    .mypage_write_div div a {
+    /*하이퍼링크 밑줄 없애기*/
+    text-decoration-line: none;
+    color: black;
+    }
+
+</style>
+<div class="mypage_div">
+    <!--user db에서 가져와야함-->
+    <!--user 정보 수정 가능해야함-->
+    <div class="mypage_profile_div">
+        <div style="margin-bottom: 20px; font-size: 20px; font-weight: bold;">id</div>
+        <div>이름</div>
+        <div>성별</div>
+        <div>이메일</div>
+    </div>
+    <div class="mypage_write_div">
+        <div>
+            <!--<a href="/user/mypage/{user_id}">내가 작성한 글 > </a>-->
+            <a href="/user/mypage">내가 작성한 글 > </a>
+        </div>
+        <hr style="border: solid 1px gray; width: 80%; margin-left: 60px; margin-top: 2px;">
+        <div>
+            <a href="/user/mypage">내가 작성한 댓글 > </a>
+        </div>
+        <hr style="border: solid 1px gray; width: 80%; margin-left: 60px; margin-top: 2px;">
+        <div>비어있음 > </div>
+        <hr style="border: solid 1px gray; width: 80%; margin-left: 60px; margin-top: 2px;">
+        <div>비어있음 > </div>
+    </div>
+</div>
+
+{% endblock %}
