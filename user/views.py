@@ -52,3 +52,7 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return redirect('/user/login')
+
+# 민영
+def mypage(request):
+    return render(request, 'user/mypage.html')
