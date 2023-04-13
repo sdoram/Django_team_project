@@ -4,12 +4,14 @@ from posting.models import Posting
 
 
 class Comment(models.Model):
+    class Meta:
+        db_table = 'comments'
     comment_id = models.IntegerField(primary_key=True)
     username = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-    post_id = models.ForeignKey(Posting, on_delete=models.CASCADE)
+    #post_id = models.ForeignKey(Posting, on_delete=models.CASCADE)
     update_at = models.DateField(auto_now=True)
     create_at = models.DateField(auto_now_add=True)
-    commnt_content = models.TextField(null=True)
+    comment_content = models.TextField(null=True)
     
     
     def save(self, *args, **kwargs):
