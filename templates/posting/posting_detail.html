@@ -1,12 +1,14 @@
 {% extends '../base.html' %}
-
 {% block title %}
-    {{ posting.title }}
+<div class="detail_title"> {{ posting.title }}</div>
 {% endblock %}
 
 {% block content %}
+
     <div class="container">
-        <h2>{{ posting.title }}</h2>
+        <div class="title_box">
+            <h2 class="posting_detail_title">{{ posting.title }}</h2>
+        </div>
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">{{ posting.title }}</h5>
