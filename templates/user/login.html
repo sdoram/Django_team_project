@@ -7,7 +7,8 @@
     <div class="container">
         <div class="wrap">
             <h2 class="title-center"> 로그인</h2>
-            <form class="form-area" method="post" action="/user/login/">
+            {# app_name:urls링크, if next의 값이 있다면 값을 가져와라        #}
+            <form class="form-area" method="post" action="{% url 'user:login' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">
                 {% csrf_token %}
                 <div class="form-group mt-2 mb-2">
                     <input type="text" class="form-control" placeholder="아이디" id="username" name="username">

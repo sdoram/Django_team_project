@@ -19,3 +19,4 @@ class Comment(models.Model):
             self.comment_id = latest_comment.comment_id + 1 if latest_comment else 1
 
         super().save(*args, **kwargs)
+
