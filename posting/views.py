@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
-
+# 개시글 상세 보기
 def posting_detail_view(request, post_id):
     posting = get_object_or_404(Posting, post_id=post_id)
     context = {
@@ -20,13 +20,7 @@ def posting_detail_view(request, post_id):
 
 
 
-
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render
-
-from .models import Posting
-
-
+#게시글 리스트
 def posting_list(request, category=None):
     if category:
         # 모델에서 choices 옵션으로 정의한 값('codereview')으로 필터링합니다.
@@ -35,7 +29,7 @@ def posting_list(request, category=None):
     else:
         posting_list = Posting.objects.all().order_by('-create_at')
 
-    paginator = Paginator(posting_list, 2)  
+    paginator = Paginator(posting_list, 6)  
     page = request.GET.get('page')
     page_obj = paginator.get_page(page) 
     
