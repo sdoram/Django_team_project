@@ -94,6 +94,7 @@
                     </li>
                     {# next 테스트용 버튼 나중에 삭제하기               #}
                 <button type="button" onclick="location.href = '/user/mypage'" class="btn btn-secondary">마이페이지</button>
+                <button type="button" onclick="location.href = '{% url 'user:login' %}?next=/posting/create'" class="btn btn-secondary">글쓰기</button>
                 </ul>
             {% else %}
                 <ul class="navbar-nav mr-auto">
