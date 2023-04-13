@@ -57,24 +57,29 @@ def posting_list(request, category=None):
 @login_required(login_url='login')
 def create_post(request):
     if request.method == 'POST':
-        user_id = request.user
+        user_id = request.user.id  # 로그인한 사용자의 id 값을 가져옴
         title = request.POST.get('title')
         main_content = request.POST.get('main_content')
         category = request.POST.get('category')
 
-        posting = Posting.objects.create(user_id=user_id,
+        posting = Posting.objects.create(username_id=user_id,  # username 필드에 로그인한 사용자의 id 값을 입력
                                          title=title,
                                          main_content=main_content,
                                          category=category)
 
-        return redirect('post_detail', post_id=posting.post_id)
+        return redirect('posting_detail', post_id=posting.id)
     else:
         return render(request, 'posting/posting_admin.html')
+
+
+
+
+
 
 # 게시글 수정
 @login_required(login_url='login')
 def update_post(request, post_id):
-    posting = get_object_or_404(Posting, post_id=post_id, user_id=request.user)
+    posting = get_object_or_404(Posting, id=post_id, user_id=request.user)
 
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -86,18 +91,19 @@ def update_post(request, post_id):
         posting.category = category
         posting.save()
 
-        return redirect('post_detail', post_id=post_id)
+        return redirect('posting_detail', post_id=post_id)
     else:
-        return render(request, 'posting/posting_admin.html', {'posting': posting})
+        context = {'posting': posting}
+        return render(request, 'posting/posting_admin.html', context)
+
 
 # 게시글 삭제
 @login_required(login_url='login')
 def delete_post(request, post_id):
-    posting = get_object_or_404(Posting, post_id=post_id, user_id=request.user)
+    posting = get_object_or_404(Posting, id=post_id, user_id=request.user)
     posting.delete()
 
     return redirect('home')
-
 
 def posting_admin(request):
     return render(request, 'posting/posting_admin.html')
@@ -113,6 +119,34 @@ def api_create_post(request):
         post.save()
         response_data = {'success': True, 'post_id': post.id}
         return JsonResponse(response_data)
+    elif request.method == 'GET':
+        response_data = {'success': True, 'message': 'API is working.'}
+        return JsonResponse(response_data)
     else:
         response_data = {'success': False, 'message': 'Invalid request method'}
         return JsonResponse(response_data, status=400)
+
+    
+
+@csrf_exempt
+def api_update_post(request, post_id):
+    if request.method == 'PUT':
+        title = request.POST.get('title')
+        main_content = request.POST.get('main_content')
+        category = request.POST.get('category')
+
+        post = get_object_or_404(Posting, post_id=post_id, user_id=request.user)
+        post.title = title
+        post.main_content = main_content
+        post.category = category
+        post.save()
+
+        data = {
+            'post_id': post.post_id,
+            'title': post.title,
+            'main_content': post.main_content,
+            'category': post.category
+        }
+        return JsonResponse(data)
+
+

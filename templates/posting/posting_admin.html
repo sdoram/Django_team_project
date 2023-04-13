@@ -1,165 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>게시글 작성</title>
-      <!-- Bootstrap CSS -->
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
-         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-   </head>
-   <body>
-      <div class="container mt-5">
-         <div class="alert alert-danger d-none" role="alert" id="error-message"></div>
-         <h2>게시글 작성</h2>
-         <form>
-            <div class="form-group">
-               <label for="title">제목</label>
-               <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요"
-               {% if posting %}value="{{ posting.title }}"{% endif %}>
-            </div>
-            <div class="form-group">
-               <label for="main_content">내용</label>
-               <textarea class="form-control" id="main_content" rows="5" placeholder="내용을 입력하세요"></textarea>
-            </div>
-            <div class="form-group">
-               <label for="category">카테고리</label>
-               <input type="text" class="form-control" id="category" placeholder="카테고리를 입력하세요"
-               {% if posting %}value="{{ posting.category }}"{% endif %}>
-            </div>
-            <button type="button" class="btn btn-secondary" id="update-post-btn">수정</button>
-            <button type="button" class="btn btn-dark" id="delete-post-btn">삭제</button>
-            <button type="button" class="btn btn-light" id="create-post-btn">작성</button>
-            <style>
-                .form-group {
-                    margin: 10px 0;
-                 }                
-                #update-post-btn {
-                    background-color: #495057;
-                    color: #FFFFFF;
-                 }
-                 
-                 #delete-post-btn {
-                    background-color: #000000;
-                    color: #FFFFFF;
-                 }
-                 
-                 #create-post-btn {
-                    background-color: #C8C8C8;
-                    color: #000000;
-                 }
+{% extends 'base.html' %}
 
-                 * {
-                    margin: 10;
-                    padding: 10;
-                  }
-                  
-                </style>
-         </form>
-         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-         <script>
-            $(document).ready(function() {
-                {% if posting %}
-                    // 게시글 수정 버튼 클릭 이벤트 처리
-                    $("#update-post-btn").click(function() {
-                        var title = $("#title").val();
-                        var mainContent = $("#main_content").val();
-                        var category = $("#category").val();
-            
-                        if (!title || !mainContent || !category) {
-                            // 필수 입력 항목이 비어있는 경우
-                            $("#error-message").text("필수 입력 항목을 모두 입력해주세요.");
-                            $("#error-message").removeClass("d-none");
+{% block content %}
+<div class="container mt-5">
+    <div class="alert alert-danger d-none" role="alert" id="error-message"></div>
+    <h2>게시글 작성</h2>
+    <form>
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="title">제목</label>
+            <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요" {% if posting %}value="{{ posting.title }}" {% endif %}>
+        </div>
+        <div class="form-group">
+            <label for="main_content">내용</label>
+            <textarea class="form-control" id="main_content" rows="5" placeholder="내용을 입력하세요">{% if posting %}{{ posting.main_content }}{% endif %}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="category">카테고리</label>
+            <span class="terms_choice">(선택)</span>
+            <div class="input-group mb-3">
+                <select class="form-select" aria-label="Example select with button addon" id="category" name="category">
+                    <option value="codereview">코드리뷰</option>
+                    <option value="course">취업진로</option>
+                    <option value="coding_study">개발공부</option>
+                    <option value="study">스터디</option>
+                    <option value="free_board">잡담</option>
+                </select>
+            </div>
+        </div>
+        {% if posting %}
+        <button type="button" class="btn btn-secondary" id="update-post-btn" onclick="updatePost('{{ posting.post_id }}')">수정</button>
+        {% else %}
+        <button type="button" class="btn btn-light" id="create-post-btn" onclick="createPost()">작성</button>
+        {% endif %}
+        {% if posting %}
+        <button type="button" class="btn btn-dark" id="delete-post-btn" onclick="deletePost('{{ posting.post_id }}')">삭제</button>
+        {% endif %}
+        <style>
+            .form-group {
+                margin: 10px 0;
+            }
+
+            #update-post-btn {
+                background-color: #495057;
+                color: #FFFFFF;
+            }
+
+            #delete-post-btn {
+                background-color: #000000;
+                color: #FFFFFF;
+            }
+
+            #create-post-btn {
+                background-color: #C8C8C8;
+                color: #000000;
+            }
+
+            * {
+                margin: 10;
+                padding: 10;
+            }
+        </style>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // 게시글 작성 버튼 클릭 이벤트 처리
+        function createPost() {
+            var title = $("#title").val();
+            var mainContent = $("#main_content").val();
+            var category = $("#category").val();
+    
+            if (!title || !mainContent) {
+                // 필수 입력 항목이 비어있는 경우
+                $("#error-message").text("필수 입력 항목을 모두 입력해주세요.");
+                $("#error-message").removeClass("d-none");
+            } else {
+                // 게시글 작성 API 호출
+                $.ajax({
+                    url: "{% url 'api_create_post' %}",
+                    type: "POST",
+                    data: {
+                        "title": title,
+                        "main_content": mainContent,
+                        "category": category,
+                        "csrfmiddlewaretoken": "{{ csrf_token }}"
+                    },
+                    success: function(response) {
+                        // 게시글 작성 성공 시, 상세 페이지로 이동
+                        {% if response.post_id %}
+                        window.location.href = "{% url 'posting_detail' post_id=response.post_id %}";
+                        {% endif %}
+                    },                            
+                    error: function(xhr) {
+                        // 게시글 작성 실패 시, 오류 메시지 출력
+                        var errorMessage = '';
+                        if (xhr.status === 400) {
+                            errorMessage = '필수 입력 항목을 모두 입력해주세요.';
                         } else {
-                                                        // 게시글 수정 API 호출
-                                                        var postId = {{ posting.post_id }};
-                                                        $.ajax({
-                                                            url: "{% url 'api_update_post' post_id=posting.post_id %}",
-                                                            type: "PUT",
-                                                            data: {
-                                                                "title": title,
-                                                                "main_content": mainContent,
-                                                                "category": category,
-                                                                "csrfmiddlewaretoken": "{{ csrf_token }}"
-                                                            },
-                                                            success: function(response) {
-                                                                // 게시글 수정 성공 시, 상세 페이지로 이동
-                                                                {% if response.post_id %}
-                                                                    window.location.href = "{% url 'posting_detail' post_id=response.post_id %}";
-                                                                {% endif %}
-
-                                                            },
-                                                            error: function(xhr) {
-                                                                // 게시글 수정 실패 시, 오류 메시지 출력
-                                                                var errorMessage = xhr.responseJSON.message;
-                                                                $("#error-message").text(errorMessage);
-                                                                $("#error-message").removeClass("d-none");
-                                                            }
-                                                        });
-                                                    }
-                                                });
-                            
-                                                // 게시글 삭제 버튼 클릭 이벤트 처리
-                                                $("#delete-post-btn").click(function() {
-                                                    // 게시글 삭제 API 호출
-                                                    var postId = {{ posting.post_id }};
-                                                    $.ajax({
-                                                        url: "{% url 'api_delete_post' post_id=posting.post_id %}",
-                                                        type: "DELETE",
-                                                        data: {
-                                                            "csrfmiddlewaretoken": "{{ csrf_token }}"
-                                                        },
-                                                        success: function(response) {
-                                                            // 게시글 삭제 성공 시, 홈으로 이동
-                                                            window.location.href = "{% url 'home' %}";
-                                                        },
-                                                        error: function(xhr) {
-                                                            // 게시글 삭제 실패 시, 오류 메시지 출력
-                                                            var errorMessage = xhr.responseJSON.message;
-                                                            $("#error-message").text(errorMessage);
-                                                            $("#error-message").removeClass("d-none");
-                                                        }
-                                                    });
-                                                });
-                                            {% else %}
-                                                // 게시글 작성 버튼 클릭 이벤트 처리
-                                                $("#create-post-btn").click(function() {
-                                                    var title = $("#title").val();
-                                                    var mainContent = $("#main_content").val();
-                                                    var category = $("#category").val();
-                            
-                                                    if (!title || !mainContent || !category) {
-                                                        // 필수 입력 항목이 비어있는 경우
-                                                        $("#error-message").text("필수 입력 항목을 모두 입력해주세요.");
-                                                        $("#error-message").removeClass("d-none");
-                                                    } else {
-                                                        // 게시글 작성 API 호출
-                                                        $.ajax({
-                                                            url: "{% url 'api_create_post' %}",
-                                                            type: "POST",
-                                                            data: {
-                                                                "title": title,
-                                                                "main_content": mainContent,
-                                                                "category": category,
-                                                                "csrfmiddlewaretoken": "{{ csrf_token }}"
-                                                            },
-                                                            success: function(response) {
-                                                                // 게시글 작성 성공 시, 상세 페이지로 이동
-                                                                {% if response.post_id %}
-                                                                    window.location.href = "{% url 'posting_detail' post_id=response.post_id %}";
-                                                                {% endif %}
-                                                            },
-                                                            error: function(xhr) {
-                                                                // 게시글 작성 실패 시, 오류 메시지 출력
-                                                                var errorMessage = xhr.responseJSON.message;
-                                                                $("#error-message").text(errorMessage);
-                                                                $("#error-message").removeClass("d-none");
-                                                            }
-                                                        });
-                                                    }
-                                                });
-                                            {% endif %}
-                                        });
-                                    
-         </script>
-      </div>
+                            errorMessage = '게시글 작성에 실패하였습니다.';
+                        }
+                        $("#error-message").text(errorMessage);
+                        $("#error-message").removeClass("d-none");
+                    }                    
+                });
+            }
+        }
+    </script>
+    {% endblock content %}

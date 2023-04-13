@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path('posting_detail/', views.posting_detail_view, name='posting_detail'),
     path('posting/<int:post_id>/', views.posting_detail_view, name='post_detail'),
@@ -11,4 +12,7 @@ urlpatterns = [
     path('delete/<int:post_id>/', views.delete_post, name='delete_post'),
     path('posting_admin/', views.posting_admin, name='posting_admin'),
     path('api/create-post/', views.api_create_post, name='api_create_post'),
+    path('api/update-post/<int:post_id>/',
+         views.api_update_post, name='api_update_post'),
+
 ]
