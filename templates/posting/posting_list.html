@@ -6,8 +6,26 @@
 
 {% block content %}
 <style>
-    
-
+    .page-link{
+        font-size: 13px;
+        background-color: gray;
+        color: white;
+    }
+    .pagination{
+        background-color: gray;
+    }
+    #bt_active{
+        background-color: beige;
+        color: beige;
+        
+    }
+    .page-item.active .page-link {
+        z-index: 1;
+        color: #555;
+        font-weight:bold;
+        background-color: #f1f1f1;
+        border-color: #ccc;
+    }
 </style>
     <div class="container">
         <h2>게시글 목록{% if category %} - {{ category }}{% endif %}</h2>
@@ -53,14 +71,16 @@
         {% endif %}
         <!-- 페이지리스트 -->
         {% for page_number in posting_list.paginator.page_range %}
+        {% if page_number >= posting_list.number|add:-5 and page_number <= posting_list.number|add:5 %}
         {% if page_number == posting_list.number %}
-        <li class="page-item active" aria-current="page">
+        <li class="page-item active"; aria-current="page">
             <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
         </li>
         {% else %}
         <li class="page-item">
             <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
         </li>
+        {% endif %}
         {% endif %}
         {% endfor %}
         <!-- 다음페이지 -->
