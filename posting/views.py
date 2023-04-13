@@ -15,11 +15,6 @@ def posting_detail_view(request, post_id):
     return render(request, 'posting/posting_detail.html', context)
 
 
-# def posting_detail_view(request):
-#     return render(request, 'posting/posting_detail.html')
-
-
-
 #게시글 리스트
 def posting_list(request, category=None):
     if category:
@@ -117,7 +112,7 @@ def api_create_post(request):
         category = request.POST.get('category')
         post = Posting(title=title, main_content=main_content, category=category)
         post.save()
-        response_data = {'success': True, 'post_id': post.id}
+        response_data = {'success': True, 'post_id': post.post_id}
         return JsonResponse(response_data)
     elif request.method == 'GET':
         response_data = {'success': True, 'message': 'API is working.'}
