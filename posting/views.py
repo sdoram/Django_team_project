@@ -35,8 +35,10 @@ def posting_list(request, category=None):
     else:
         posting_list = Posting.objects.all().order_by('-create_at')
 
-    paginator = Paginator(posting_list, 6)  
-    page = request.GET.get('page')  
+    paginator = Paginator(posting_list, 2)  
+    page = request.GET.get('page')
+    page_obj = paginator.get_page(page) 
+    
 
     try:
         posting_list = paginator.page(page)
@@ -49,6 +51,7 @@ def posting_list(request, category=None):
         'title': 'LIST',
         'posting_list': posting_list,
         'category': category,
+        'page_obj' : page_obj
     }
 
     return render(request, 'posting/posting_list.html', context)

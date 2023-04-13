@@ -5,6 +5,10 @@
 {% endblock %}
 
 {% block content %}
+<style>
+    
+
+</style>
     <div class="container">
         <h2>게시글 목록{% if category %} - {{ category }}{% endif %}</h2>
         <div class="btn-group" role="group" aria-label="카테고리 선택">
@@ -35,23 +39,42 @@
             </tbody>
         </table>
 
-        <div class="pagination">
-            <span class="step-links">
-                {% if posting_list.has_previous %}
-                    <a href="{% url 'posting_list' category=category %}?page=1">&laquo; first</a>
-                    <a href="{% url 'posting_list' category=category %}?page={{ posting_list.previous_page_number }}">&lsaquo; prev</a>
-                {% endif %}
-        
-                <span class="current-page">
-                    Page {{ posting_list.number }} of {{ posting_list.paginator.num_pages }}.
-                </span>
-        
-                {% if posting_list.has_next %}
-                    <a href="{% url 'posting_list' category=category %}?page={{ posting_list.next_page_number }}">next &rsaquo;</a>
-                    <a href="{% url 'posting_list' category=category %}?page={{ posting_list.paginator.num_pages }}">last &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
+        <!-- 페이징처리 시작 -->
+    <ul  class="pagination justify-content-center">
+        <!-- 이전페이지 -->
+        {% if posting_list.has_previous %}
+        <li class="page-item" >
+            <a class="page-link" href="?page={{ posting_list.previous_page_number }}">이전</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+        {% endif %}
+        <!-- 페이지리스트 -->
+        {% for page_number in posting_list.paginator.page_range %}
+        {% if page_number == posting_list.number %}
+        <li class="page-item active" aria-current="page">
+            <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if posting_list.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ posting_list.next_page_number }}">다음</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- 페이징처리 끝 -->
         
     </div>
 {% endblock %}
