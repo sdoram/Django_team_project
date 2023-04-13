@@ -10,7 +10,9 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+
         ('posting', '0002_remove_posting_id_alter_posting_main_content_and_more'),
+
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
