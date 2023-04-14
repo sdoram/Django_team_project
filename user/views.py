@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from posting.models import Posting
 
 
 def signup(request):
@@ -80,10 +81,10 @@ def edit(request):
 
 
 def mypage(request):
-        user = UserModel()
+        user = request.user
         if request.method == 'GET':
-            # username = request.GET.get('username', None)
-            return render(request, 'user/mypage.html')
+            postings = Posting.objects.filter(username=user)
+            return render(request, 'user/mypage.html', {'user': user, 'postings': postings})
         if request.method == 'POST':
             username = request.POST.get('username', None)
             # name = request.POST.get('name', None)
@@ -115,5 +116,7 @@ def mypage(request):
 #     user.username = 'username'
 #     render(request, 'user/edit.html')
 
-
-
+def user_postings(request, user_id):
+    user = UserModel.objects.get(pk=user_id)
+    postings = user.postings.all()
+    return render(request, 'user/mypage.html', {'postings': postings})
