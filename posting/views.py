@@ -155,3 +155,6 @@ def api_update_post(request, post_id):
             'category': post.category
         }
         return JsonResponse(data)
+
+
+

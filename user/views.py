@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import UserModel
+from posting.models import Posting
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 from django.contrib import auth
@@ -77,13 +78,36 @@ def logout(request):
 # 민영
 
 def edit(request):
-    return render(request, 'user/edit.html')
+    if request.method == "POST":
+        username = request.POST.get('username', None)
+        gender = request.POST.get('gender', None)
+        name = request.POST.get('name', None)
+        email = request.POST.get('email', None)
+
+        # 기존 사용자 정보를 가져옴
+        # me = get_object_or_404(UserModel, pk=username)
+        me = get_object_or_404(UserModel, username=username)
+        # 하나도 변경된 사항이 없는 경우 -> alert창
+        if me.username == username and me.gender == gender and me.name == name and email == email:
+            return HttpResponse("<script>alert('변경사항이 없습니다!');location.href='/user/edit';</script>")
+        # 변경된 사항이 있는 경우 -> 저장
+        else:
+            me.username = username
+            me.gender = gender
+            me.name = name
+            me.email = email
+            me.save()
+
+            return HttpResponse("<script>alert('수정완료!');location.href='/user/mypage';</script>")
+    elif request.method == "GET":
+        return render(request, 'user/edit.html')
 
 
 def mypage(request):
         user = request.user
         if request.method == 'GET':
-            postings = Posting.objects.filter(username=user)
+            # .order_by('-create_at')은 정렬하기
+            postings = Posting.objects.filter(username=user).order_by('-create_at')
             return render(request, 'user/mypage.html', {'user': user, 'postings': postings})
         if request.method == 'POST':
             username = request.POST.get('username', None)
@@ -99,10 +123,17 @@ def mypage(request):
                 return HttpResponse('성공')
             else:
                 return HttpResponse('실패')
+            
 
+
+
+def myposting(request):
+        user = request.user
+        if request.method == 'GET':
+            postings = Posting.objects.filter(username=user)
+            return render(request, 'user/myposting.html', {'user': user, 'postings': postings})
+            
 
 def user_info(request, username):
     user_info = get_object_or_404(UserModel, username=username)
     return render(request, 'user/user_info.html', {'user_info': user_info})
-
-

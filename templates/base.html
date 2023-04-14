@@ -137,17 +137,17 @@
 </div>
 <!-- 네비 -->
 <div class="nav_main">
-    <div class="category-box"><a id="nav_text{% if not category %} {% endif %}" href="{% url 'posting_list' %}">전 체 목 록</a></div>
-    <div class="category-box"><a id="nav_text{% if category == 'codereview' %} {% endif %}"
-                                 href="{% url 'posting_list' 'codereview' %}">코 드 리 뷰</a></div>
-    <div class="category-box"><a id="nav_text{% if category == 'course' %} {% endif %}"
-                                 href="{% url 'posting_list' 'course' %}">취 업 진 로</a></div>
-    <div class="category-box"><a id="nav_text{% if category == 'coding_study' %} {% endif %}"
-                                 href="{% url 'posting_list' 'coding_study' %}">개 발 공 부</a></div>
-    <div class="category-box"><a id="nav_text{% if category == 'free_board' %} {% endif %}"
-                                 href="{% url 'posting_list' 'free_board' %}">잡 담</a></div>
-    <div class="category-box"><a id="nav_text{% if category == 'study' %} {% endif %}"
-                                 href="{% url 'posting_list' 'study' %}">스 터 디</a></div>
+    <div class="category-box"><b><a id="nav_text{% if not category %} {% endif %}" href="{% url 'posting_list' %}">전 체 목 록</a></b></div>
+    <div class="category-box"><b><a id="nav_text{% if category == 'codereview' %} {% endif %}"
+                                 href="{% url 'posting_list' 'codereview' %}">코 드 리 뷰</a></b></div>
+    <div class="category-box"><b><a id="nav_text{% if category == 'course' %} {% endif %}"
+                                 href="{% url 'posting_list' 'course' %}">취 업 진 로</a></b></div>
+    <div class="category-box"><b><a id="nav_text{% if category == 'coding_study' %} {% endif %}"
+                                 href="{% url 'posting_list' 'coding_study' %}">개 발 공 부</a></b></div>
+    <div class="category-box"><b><a id="nav_text{% if category == 'free_board' %} {% endif %}"
+                                 href="{% url 'posting_list' 'free_board' %}">잡 담</a></b></div>
+    <div class="category-box"><b><a id="nav_text{% if category == 'study' %} {% endif %}"
+                                 href="{% url 'posting_list' 'study' %}">스 터 디</a></b></div>
 </div>
 </nav>
 <div class="container">
