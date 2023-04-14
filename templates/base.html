@@ -104,9 +104,43 @@
             <a id="nav_text" href="/">커뮤니티</a>
             <a id="nav_text" href="/">스터디</a>
         </div>
+        <form class="form-inline my-2 my-lg-0">
+            {% if not user.is_authenticated %}
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <button type="button" onclick="location.href = '{% url 'user:signup' %}?next={{request.path}}'" class="btn btn-secondary">회원가입
+                        </button>
+                    </li>
+                    <li class="nav-item active">
+                        <button type="button" onclick="location.href = '{% url 'user:login' %}?next={{request.path}}'" class="btn btn-secondary">로그인
+                        </button>
+                    </li>
+                    {# next 테스트용 버튼 나중에 삭제하기               #}
+                <button type="button" onclick="location.href = '/user/mypage'" class="btn btn-secondary">마이페이지</button>
+                <button type="button" onclick="location.href = '{% url 'user:login' %}?next=/posting/create'" class="btn btn-secondary">글쓰기</button>
+                </ul>
+            {% else %}
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        {{ user.username }} 님 반갑습니다.
+                    </li>
+                    <li class="nav-item active">
+                        <button type="button" onclick="location.href = '{% url 'user:logout' %}?next={{request.path}}'" class="btn btn-secondary">로그아웃</button>
+                        <button type="button" onclick="location.href = '/user/mypage'" class="btn btn-secondary">마이페이지</button>
+                        <button type="button" onclick="location.href = '/posting/create'" class="btn btn-secondary">글쓰기</button>
+                    </li>
+                </ul>
+            {% endif %}
+        </form>
     </div>
-    <div class="container">
-        {% block content %}{% endblock %}
+    <!-- 네비 -->
+    <div class="nav_main">
+        <a id="nav_text{% if not category %} {% endif %}" href="{% url 'posting_list' %}">전체목록</a>
+        <a id="nav_text{% if category == 'codereview' %} {% endif %}" href="{% url 'posting_list' 'codereview' %}">코드리뷰</a>
+        <a id="nav_text{% if category == 'course' %} {% endif %}" href="{% url 'posting_list' 'course' %}">취업진로</a>
+        <a id="nav_text{% if category == 'coding_study' %} {% endif %}" href="{% url 'posting_list' 'coding_study' %}">개발공부</a>
+        <a id="nav_text{% if category == 'free_board' %} {% endif %}" href="{% url 'posting_list' 'free_board' %}">잡담</a>
+        <a id="nav_text{% if category == 'study' %} {% endif %}" href="{% url 'posting_list' 'study' %}">스터디</a>
     </div>
 </nav>
 <div class="container">

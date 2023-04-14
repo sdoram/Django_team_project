@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Posting
+from user.models import UserModel
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger # 페이지 페이징 처리 모듈
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -117,7 +118,7 @@ def api_create_post(request):
         category = request.POST.get('category')
         post = Posting(title=title, main_content=main_content, category=category)
         post.save()
-        response_data = {'success': True, 'post_id': post.id}
+        response_data = {'success': True, 'post_id': post.post_id}
         return JsonResponse(response_data)
     elif request.method == 'GET':
         response_data = {'success': True, 'message': 'API is working.'}
