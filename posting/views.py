@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Posting
+from comment.models import Comment
 from user.models import UserModel
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger # 페이지 페이징 처리 모듈
 from django.http import JsonResponse
@@ -12,8 +13,10 @@ from django.urls import reverse
 # 개시글 상세 보기
 def posting_detail_view(request, post_id):
     posting = get_object_or_404(Posting, post_id=post_id)
+    comment_list = Comment.objects.order_by('-create_at')
     context = {
-        'posting': posting
+        'posting': posting,
+        'comment_list' : comment_list
     }
     return render(request, 'posting/posting_detail.html', context)
 
