@@ -4,7 +4,6 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="container">
         <div class="title_box">
             <h2 class="posting_detail_title">{{ posting.title }}</h2>
@@ -16,9 +15,18 @@
                 <p class="card-text">{{ posting.created_at }}</p>
                 <p class="card-text">{{ posting.updated_at }}</p>
                 <p class="card-text">{{ posting.category }}</p>
+            
             </div>
         </div>
-        <a class="btn btn-secondary" href="/posting/posting_list">목록으로</a>
+        <a class="btn btn-secondary" href="{% url 'posting_list' %}">목록으로</a>
+        {% if user.is_authenticated and user == posting.username %}
+        <a class="btn btn-secondary" href="{% url 'update_post' post_id=posting.post_id %}">수정하기</a>
+        <form action="{% url 'delete_post' pk=posting.post_id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <input type="submit" value="삭제하기" class="btn btn-secondary">
+        </form>
+        {% endif %}
+    
         <br>
         <h3>댓글<h3>
     </div>

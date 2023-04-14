@@ -5,6 +5,8 @@ from user.models import UserModel
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger # 페이지 페이징 처리 모듈
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
+
 
 
 # 개시글 상세 보기
@@ -65,7 +67,7 @@ def create_post(request):
                                          main_content=main_content,
                                          category=category)
 
-        return redirect('posting_detail', post_id=posting.id)
+        return redirect('posting_detail', post_id=posting.post_id)
     else:
         return render(request, 'posting/posting_admin.html')
 
@@ -77,7 +79,7 @@ def create_post(request):
 # 게시글 수정
 @login_required(login_url='login')
 def update_post(request, post_id):
-    posting = get_object_or_404(Posting, id=post_id, user_id=request.user)
+    posting = get_object_or_404(Posting, post_id=post_id, username=request.user)
 
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -89,7 +91,7 @@ def update_post(request, post_id):
         posting.category = category
         posting.save()
 
-        return redirect('posting_detail', post_id=post_id)
+        return redirect(reverse('posting_detail', kwargs={'post_id': post_id}))
     else:
         context = {'posting': posting}
         return render(request, 'posting/posting_admin.html', context)
@@ -97,11 +99,15 @@ def update_post(request, post_id):
 
 # 게시글 삭제
 @login_required(login_url='login')
-def delete_post(request, post_id):
-    posting = get_object_or_404(Posting, id=post_id, user_id=request.user)
-    posting.delete()
+def delete_post(request, pk):
+    posting = get_object_or_404(Posting, post_id=pk, username=request.user)
+    if request.method == 'POST':
+        posting.delete()
+        return redirect('posting_list')
+    else:
+        context = {'posting': posting}
+        return render(request, 'posting/posting_confirm_delete.html', context)
 
-    return redirect('home')
 
 def posting_admin(request):
     return render(request, 'posting/posting_admin.html')
@@ -146,4 +152,3 @@ def api_update_post(request, post_id):
             'category': post.category
         }
         return JsonResponse(data)
-

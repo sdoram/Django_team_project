@@ -2,7 +2,7 @@ from django.db import models
 from user.models import UserModel
 
 class Posting(models.Model):
-    username = models.ForeignKey(UserModel, on_delete=models.CASCADE, null=True) 
+    username = models.ForeignKey(UserModel, on_delete=models.CASCADE, null=True, related_name='postings') 
     post_id = models.IntegerField(primary_key=True)
     main_content = models.TextField(null=True)
     create_at = models.DateField(auto_now_add=True)
