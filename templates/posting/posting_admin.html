@@ -35,6 +35,11 @@
         {% if posting %}
         <button type="button" class="btn btn-dark" id="delete-post-btn" onclick="deletePost('{{ posting.post_id }}')">삭제</button>
         {% endif %}
+            <!-- 글 작성 취소 버튼 추가 -->
+        {% if not posting %}
+        <a href="{% url 'posting_list' %}" class="btn btn-light">취소</a>
+
+        {% endif %}
         <style>
             .form-group {
                 margin: 10px 0;
@@ -86,9 +91,7 @@
                     },
                     success: function(response) {
                         // 게시글 작성 성공 시, 상세 페이지로 이동
-                        {% if response.post_id %}
-                        window.location.href = "{% url 'posting_detail' post_id=response.post_id %}";
-                        {% endif %}
+                        window.location.href = "{% url 'posting_list' %}"
                     },                            
                     error: function(xhr) {
                         // 게시글 작성 실패 시, 오류 메시지 출력

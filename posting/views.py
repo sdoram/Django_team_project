@@ -49,8 +49,10 @@ def posting_list(request, category=None):
 
 
 # 게시글 작성
-@login_required(login_url='login')
+# @login_required(login_url='login')
 def create_post(request):
+    if not request.user.is_authenticated:
+        return redirect("/main")
     if request.method == 'POST':
         user_id = request.user.id  # 로그인한 사용자의 id 값을 가져옴
         title = request.POST.get('title')
@@ -103,7 +105,7 @@ def delete_post(request, post_id):
 def posting_admin(request):
     return render(request, 'posting/posting_admin.html')
 
-
+# return 값 수정 
 @csrf_exempt
 def api_create_post(request):
     if request.method == 'POST':
@@ -143,5 +145,4 @@ def api_update_post(request, post_id):
             'category': post.category
         }
         return JsonResponse(data)
-
 
