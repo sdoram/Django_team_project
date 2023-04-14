@@ -8,11 +8,10 @@ class Comment(models.Model):
         db_table = 'comments'
     comment_id = models.IntegerField(primary_key=True)
     username = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-    #post_id = models.ForeignKey(Posting, on_delete=models.CASCADE)
+    posting = models.ForeignKey(Posting, on_delete=models.CASCADE, null=True)
     update_at = models.DateField(auto_now=True)
     create_at = models.DateField(auto_now_add=True)
     comment_content = models.TextField(null=True)
-    
     
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -21,4 +20,3 @@ class Comment(models.Model):
             self.comment_id = latest_comment.comment_id + 1 if latest_comment else 1
 
         super().save(*args, **kwargs)
-
