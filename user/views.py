@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import UserModel
+from posting.models import Posting
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 from django.contrib import auth
@@ -102,21 +103,34 @@ def mypage(request):
 
 
 
+# def myposting(request):
+#     # get일 경우
+    
+    
+    
+#     if request.method == "GET":
+#         username = request.POST.get('username', None)
+#         # 일단 user정보 중 username(pk) 가져오기
+#         me = get_object_or_404(UserModel, username=username)
 
-# 마이페이지 user정보 수정
-# 1. 버튼을 누르는 순간 기존 사용자 정보를 가져오는데
-#  입력폼에 채워진 채로 보여주는 것이 중요
-# 2. 새로입력한 내용을 post요청으로 db에 보냄
+#         # 로그인한 사용자와 게시물을 작성한 사용자가 같은 경우
+#         if me.username == 게시물을 작성한 사용자:
+#             return
 
-# def edit(request):
-#     if request.method == 'POST':
-#         return
-#     # username, name, email을 가지고와서 user에 저장
-#     user = UserModel.objects.get(username='username', name='name', email='email')
-#     user.username = 'username'
-#     render(request, 'user/edit.html')
+#     return render(request, 'user/myposting.html')
 
-def user_postings(request, user_id):
-    user = UserModel.objects.get(pk=user_id)
-    postings = user.postings.all()
-    return render(request, 'user/mypage.html', {'postings': postings})
+
+# posting 모델 임포트함
+# 제목이랑 글쓴이만 출력
+def main(request):
+    # 모든 게시글 가져오기
+    posts = Posting.objects.all()
+    #posts라는 이름으로 가져온 모든 게시글을 템플릿에 전달
+    #html에서 for문에 사용
+    context = {
+        'posts':posts
+    }
+    return render(request, 'main.html', context)
+    
+
+
