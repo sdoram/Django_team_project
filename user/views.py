@@ -126,9 +126,14 @@ def mypage(request):
             
 
 
+
 def myposting(request):
         user = request.user
         if request.method == 'GET':
             postings = Posting.objects.filter(username=user)
             return render(request, 'user/myposting.html', {'user': user, 'postings': postings})
             
+
+def user_info(request, username):
+    user_info = get_object_or_404(UserModel, username=username)
+    return render(request, 'user/user_info.html', {'user_info': user_info})

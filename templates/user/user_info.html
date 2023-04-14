@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        .mypage_div {
+            /*크기설정*/
+            width: 500px;
+            height: 900px;
+            /*화면 가운데로 오게 하려면 auto 해야함*/
+            margin: 50px auto;
+        }
+
+        .mypage_profile_div {
+            /*세로가운데 정렬*/
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            /*자식 div들을 세로로 정렬할때!!*/
+            flex-direction: column;
+
+            /*크기설정*/
+            width: 500px;
+            height: 200px;
+            /*라운드*/
+            border-radius: 50px;
+            /*박스선*/
+            border: solid 1px;
+            margin-bottom: 20px;
+
+            /*(부모)자식 위치잡기위해*/
+            position: relative;
+        }
+
+        .mypage_profile_img {
+            position: absolute;
+            top: 20px;
+            left: -60px;
+            width: 100px;
+            height: 100px;
+            background-color: black;
+            border-radius: 50px;
+        }
+
+        .mypage_Modify_btn {
+            position: absolute;
+            top: 30px;
+            left: 35px;
+            width: 100%;
+            font-size: 10px;
+        }
+
+        .mypage_Modify_btn a {
+            text-decoration-line: none;
+            color: black;
+        }
+
+
+        .mypage_write_div {
+            /*세로가운데 정렬*/
+            display: flex;
+            align-items: left;
+            justify-content: center;
+
+            /*자식 div들을 세로로 정렬할때!!*/
+            flex-direction: column;
+
+            /*크기설정*/
+            width: 500px;
+            height: 400px;
+            /*라운드*/
+            border-radius: 50px;
+            /*박스선*/
+            border: solid 1px;
+        }
+
+        .mypage_profile_div div {
+            /*div 안 글자 가운데정렬*/
+            text-align: center;
+            display: inline-flex;
+            margin-bottom: 10px;
+        }
+
+        .mypage_write_div div {
+            /*div 안 글자 가운데정렬*/
+            color: black;
+            text-align: left;
+            margin-left: 70px;
+            margin-bottom: 10px;
+        }
+
+        .mypage_write_div div a {
+            /*하이퍼링크 밑줄 없애기*/
+            text-decoration-line: none;
+            color: black;
+        }
+    </style>
+    <form class="mypage_form" method="get" action="/mypage/">
+        <div class="mypage_div">
+            <!--user db에서 가져와야함-->
+            <!--user 정보 수정 가능해야함-->
+            <div class="mypage_profile_div">
+                <div class="mypage_profile_img">
+
+                </div>
+                <div class="mypage_Modify_btn"></div>
+                <div style="margin-bottom: 20px; font-size: 20px; font-weight: bold;">
+                    {{ user_info.username }}
+                </div>
+                <div>
+                    {{ user_info.name }}
+                </div>
+                <div>
+                    {{ user_info.gender }}
+                </div>
+                <div>
+                    {{ user_info.email }}
+                </div>
+            </div>
+            <div class="mypage_write_div">
+                <div>
+                    <a href="/user/mypage">{{ user_info.username }}님이 작성한 글 > </a>
+                        {% if postings %}
+                            <ul>
+                                {% for posting in postings %}
+                                    <li>{{ posting.title }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>작성한 글이 없습니다.</p>
+                        {% endif %}
+                </div>
+                <hr style="border: solid 1px gray; width: 80%; margin-left: 60px; margin-top: 2px;">
+                <div>
+                    <a href="/user/mypage">{{ user_info.username }}님이 작성한 댓글 > </a>
+                </div>
+                <hr style="border: solid 1px gray; width: 80%; margin-left: 60px; margin-top: 2px;">
+                <div>비어있음 ></div>
+                <hr style="border: solid 1px gray; width: 80%; margin-left: 60px; margin-top: 2px;">
+                <div>비어있음 ></div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
