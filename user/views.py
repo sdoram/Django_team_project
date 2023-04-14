@@ -54,5 +54,46 @@ def logout(request):
     return redirect('/user/login')
 
 # 민영
+
+def edit(request):
+    return render(request, 'user/edit.html')
+
+
 def mypage(request):
-    return render(request, 'user/mypage.html')
+        user = UserModel()
+        if request.method == 'GET':
+            # username = request.GET.get('username', None)
+            return render(request, 'user/mypage.html')
+        if request.method == 'POST':
+            username = request.POST.get('username', None)
+            # name = request.POST.get('name', None)
+            # gender = request.POST.get('gender', None)
+            # email = request.POST.get('email', None)
+            if username:
+                user.username = username
+                # user.name = name
+                # user.gender = gender
+                # user.email = email
+                user.save()
+                return HttpResponse('성공')
+            else:
+                return HttpResponse('실패')
+
+
+
+
+# 마이페이지 user정보 수정
+# 1. 버튼을 누르는 순간 기존 사용자 정보를 가져오는데
+#  입력폼에 채워진 채로 보여주는 것이 중요
+# 2. 새로입력한 내용을 post요청으로 db에 보냄
+
+# def edit(request):
+#     if request.method == 'POST':
+#         return
+#     # username, name, email을 가지고와서 user에 저장
+#     user = UserModel.objects.get(username='username', name='name', email='email')
+#     user.username = 'username'
+#     render(request, 'user/edit.html')
+
+
+
