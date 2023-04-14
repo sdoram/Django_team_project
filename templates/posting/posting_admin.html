@@ -4,41 +4,40 @@
 <div class="container mt-5">
     <div class="alert alert-danger d-none" role="alert" id="error-message"></div>
     <h2>게시글 작성</h2>
-    <form>
+    <form method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label for="title">제목</label>
-            <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요" {% if posting %}value="{{ posting.title }}" {% endif %}>
+            <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요" {% if posting %}value="{{ posting.title }}" {% endif %}>
         </div>
         <div class="form-group">
             <label for="main_content">내용</label>
-            <textarea class="form-control" id="main_content" rows="5" placeholder="내용을 입력하세요">{% if posting %}{{ posting.main_content }}{% endif %}</textarea>
+            <textarea class="form-control" id="main_content" name="main_content" rows="5" placeholder="내용을 입력하세요">{% if posting %}{{ posting.main_content }}{% endif %}</textarea>
         </div>
         <div class="form-group">
             <label for="category">카테고리</label>
             <span class="terms_choice">(선택)</span>
             <div class="input-group mb-3">
                 <select class="form-select" aria-label="Example select with button addon" id="category" name="category">
-                    <option value="codereview">코드리뷰</option>
-                    <option value="course">취업진로</option>
-                    <option value="coding_study">개발공부</option>
-                    <option value="study">스터디</option>
-                    <option value="free_board">잡담</option>
+                    <option value="codereview" {% if posting and posting.category == 'codereview' %}selected{% endif %}>코드리뷰</option>
+                    <option value="course" {% if posting and posting.category == 'course' %}selected{% endif %}>취업진로</option>
+                    <option value="coding_study" {% if posting and posting.category == 'coding_study' %}selected{% endif %}>개발공부</option>
+                    <option value="study" {% if posting and posting.category == 'study' %}selected{% endif %}>스터디</option>
+                    <option value="free_board" {% if posting and posting.category == 'free_board' %}selected{% endif %}>잡담</option>
                 </select>
             </div>
         </div>
         {% if posting %}
-        <button type="button" class="btn btn-secondary" id="update-post-btn" onclick="updatePost('{{ posting.post_id }}')">수정</button>
+        <button type="submit" class="btn btn-secondary">수정</button>
         {% else %}
-        <button type="button" class="btn btn-light" id="create-post-btn" onclick="createPost()">작성</button>
+        <button type="submit" class="btn btn-light">작성</button>
         {% endif %}
         {% if posting %}
         <button type="button" class="btn btn-dark" id="delete-post-btn" onclick="deletePost('{{ posting.post_id }}')">삭제</button>
         {% endif %}
-            <!-- 글 작성 취소 버튼 추가 -->
+        <!-- 글 작성 취소 버튼 추가 -->
         {% if not posting %}
         <a href="{% url 'posting_list' %}" class="btn btn-light">취소</a>
-
         {% endif %}
         <style>
             .form-group {
@@ -66,46 +65,5 @@
             }
         </style>
     </form>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        // 게시글 작성 버튼 클릭 이벤트 처리
-        function createPost() {
-            var title = $("#title").val();
-            var mainContent = $("#main_content").val();
-            var category = $("#category").val();
-    
-            if (!title || !mainContent) {
-                // 필수 입력 항목이 비어있는 경우
-                $("#error-message").text("필수 입력 항목을 모두 입력해주세요.");
-                $("#error-message").removeClass("d-none");
-            } else {
-                // 게시글 작성 API 호출
-                $.ajax({
-                    url: "{% url 'api_create_post' %}",
-                    type: "POST",
-                    data: {
-                        "title": title,
-                        "main_content": mainContent,
-                        "category": category,
-                        "csrfmiddlewaretoken": "{{ csrf_token }}"
-                    },
-                    success: function(response) {
-                        // 게시글 작성 성공 시, 상세 페이지로 이동
-                        window.location.href = "{% url 'posting_list' %}"
-                    },                            
-                    error: function(xhr) {
-                        // 게시글 작성 실패 시, 오류 메시지 출력
-                        var errorMessage = '';
-                        if (xhr.status === 400) {
-                            errorMessage = '필수 입력 항목을 모두 입력해주세요.';
-                        } else {
-                            errorMessage = '게시글 작성에 실패하였습니다.';
-                        }
-                        $("#error-message").text(errorMessage);
-                        $("#error-message").removeClass("d-none");
-                    }                    
-                });
-            }
-        }
-    </script>
-    {% endblock content %}
+</div>
+{% endblock content %}
