@@ -29,5 +29,30 @@
     
         <br>
         <h3>댓글</h3>
-    </div>
+                    <div class="card-body">
+                        <div class="commnt_list">
+                            {% for comment in comment_list %}
+                            <div> 
+                                <p class="commnt_text">작성자: {{ user.username }}</p>
+                                <p class="commnt_text">댓글내용: {{ comment.comment_content }}</p>
+                                <p class="commnt_text">{{ comment.create_at }}</p> 
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="media">
+                            <div class="media-body">
+                                <h5 class="mt-0">나의 이야기를 적어주세요</h5>
+                                <p>
+                                <form action = "/comment/" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group mb-2">
+                                        <textarea class="form-control" style="resize: none" name='comment_content' id="comment_content"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-secondary" style="float:right;">작성하기</button>
+                                </form>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 {% endblock %}
