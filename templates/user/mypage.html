@@ -1,148 +1,187 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <style>
-        .mypage_div {
-            /*크기설정*/
-            width: 500px;
-            height: 900px;
-            /*화면 가운데로 오게 하려면 auto 해야함*/
-            margin: 50px auto;
-        }
+<style>
+    .mypage_div {
+        /*크기설정*/
+        width: 500px;
+        height: 900px;
+        /*화면 가운데로 오게 하려면 auto 해야함*/
+        margin: 50px auto;
+    }
 
-        .mypage_profile_div {
-            /*세로가운데 정렬*/
-            display: flex;
-            align-items: center;
-            justify-content: center;
+    .mypage_profile_div {
+        /*세로가운데 정렬*/
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-            /*자식 div들을 세로로 정렬할때!!*/
-            flex-direction: column;
+        /*자식 div들을 세로로 정렬할때!!*/
+        flex-direction: column;
 
-            /*크기설정*/
-            width: 500px;
-            height: 200px;
-            /*라운드*/
-            border-radius: 50px;
-            /*박스선*/
-            border: solid 1px;
-            margin-bottom: 20px;
+        /*크기설정*/
+        width: 500px;
+        height: 250px;
+        /*라운드*/
+        border-radius: 50px;
+        /*박스선*/
+        border: solid 1px;
+        margin-bottom: 20px;
 
-            /*(부모)자식 위치잡기위해*/
-            position: relative;
-        }
+        /*(부모)자식 위치잡기위해*/
+        position: relative;
+    }
 
-        .mypage_profile_img {
-            position: absolute;
-            top: 20px;
-            left: -60px;
-            width: 100px;
-            height: 100px;
-            background-color: black;
-            border-radius: 50px;
-        }
+    .mypage_profile_img {
+        position: absolute;
+        top: 20px;
+        left: -60px;
+        width: 100px;
+        height: 100px;
+        background-color: black;
+        border-radius: 50px;
+    }
 
-        .mypage_Modify_btn {
-            position: absolute;
-            top: 30px;
-            left: 35px;
-            width: 100%;
-            font-size: 10px;
-        }
+    .mypage_Modify_btn {
+        /* position: absolute; */
+        /* top: 30px;
+            left: 35px; */
 
-        .mypage_Modify_btn a {
-            text-decoration-line: none;
-            color: black;
-        }
+        /* width: 100%; */
+        font-size: 10px;
+        /* margin-right: 20%;
+            margin-top: 10%; */
+        justify-content: right;
+        padding-top: 20px;
+    }
+
+    .mypage_Modify_btn button {
+        color: white;
+        background-color: black;
+    }
 
 
-        .mypage_write_div {
-            /*세로가운데 정렬*/
-            display: flex;
-            align-items: left;
-            justify-content: center;
+    .mypage_write_div {
+        /*세로가운데 정렬*/
+        display: flex;
+        align-items: left;
+        justify-content: center;
 
-            /*자식 div들을 세로로 정렬할때!!*/
-            flex-direction: column;
+        /*자식 div들을 세로로 정렬할때!!*/
+        flex-direction: column;
 
-            /*크기설정*/
-            width: 500px;
-            height: 400px;
-            /*라운드*/
-            border-radius: 50px;
-            /*박스선*/
-            border: solid 1px;
-        }
+        /*크기설정*/
+        width: 500px;
+        height: 400px;
+        /*라운드*/
+        border-radius: 50px;
+        /*박스선*/
+        border: solid 1px;
+    }
 
-        .mypage_profile_div div {
-            /*div 안 글자 가운데정렬*/
-            text-align: center;
-            display: inline-flex;
-            margin-bottom: 10px;
-        }
+    .mypage_profile_div div {
+        /*div 안 글자 가운데정렬*/
+        text-align: center;
+        display: inline-flex;
+        margin-bottom: 10px;
+    }
 
-        .mypage_write_div div {
-            /*div 안 글자 가운데정렬*/
-            color: black;
-            text-align: left;
-            margin-left: 70px;
-            margin-bottom: 10px;
-        }
+    .mypage_write_div div {
+        /*div 안 글자 가운데정렬*/
+        color: black;
+        text-align: left;
+        margin-left: 70px;
+        margin-bottom: 10px;
+    }
 
-        .mypage_write_div div a {
-            /*하이퍼링크 밑줄 없애기*/
-            text-decoration-line: none;
-            color: black;
-        }
-    </style>
-    <form class="mypage_form" method="get" action="/mypage/">
-        <div class="mypage_div">
-            <!--user db에서 가져와야함-->
-            <!--user 정보 수정 가능해야함-->
-            <div class="mypage_profile_div">
-                <div class="mypage_profile_img">
+    .mypage_write_div div a {
+        /*하이퍼링크 밑줄 없애기*/
+        text-decoration-line: none;
+        color: black;
+    }
 
-                </div>
-                <div class="mypage_Modify_btn">
-                    <a href="/user/edit">수정 > </a>
-                </div>
-                <div style="margin-bottom: 20px; font-size: 20px; font-weight: bold;">
-                    {{ user.username }}
-                </div>
-                <div>
-                    {{ user.name }}
-                </div>
-                <div>
-                    {{ user.gender }}
-                </div>
-                <div>
-                    {{ user.email }}
-                </div>
+    .mypage_write_div li {
+        /*길이 제한*/
+        display: block;
+        width: 200px;
+        /*텍스트가 표시되는 영역을 벗어났을 때 남은 글자 안보이게 함*/
+        overflow: hidden;
+        /*생략기호 사용*/
+        text-overflow: ellipsis;
+        /*텍스트가 길어지면 줄 바꿈을 하지 않도록 함*/
+        white-space: nowrap;
+    }
+
+    .mypage_write ul {
+        margin-top: 20px;
+    }
+
+    .mypage_write ul li {
+        margin-top: 10px;
+    }
+</style>
+<form class="mypage_form" method="get" action="/mypage/">
+    <div class="mypage_div">
+        <!--user db에서 가져와야함-->
+        <!--user 정보 수정 가능해야함-->
+        <div class="mypage_profile_div">
+            <div class="mypage_profile_img">
+
             </div>
-            <div class="mypage_write_div">
-                <div>
-                    <!--<a href="/user/mypage/{user_id}">내가 작성한 글 > </a>-->
-                    <a href="/user/mypage">{{ user.username }}님이 작성한 글 > </a>
-                        {% if postings %}
-                            <ul>
-                                {% for posting in postings %}
-                                    <li>{{ posting.title }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <p>작성한 글이 없습니다.</p>
-                        {% endif %}
-                </div>
-                <hr style="border: solid 1px gray; width: 80%; margin-left: 60px; margin-top: 2px;">
-                <div>
-                    <a href="/user/mypage">내가 작성한 댓글 > </a>
-                </div>
-                <hr style="border: solid 1px gray; width: 80%; margin-left: 60px; margin-top: 2px;">
-                <div>비어있음 ></div>
-                <hr style="border: solid 1px gray; width: 80%; margin-left: 60px; margin-top: 2px;">
-                <div>비어있음 ></div>
+            <div class="mypage_Modify_btn">
+                <button type="button" onclick="location.href = '/user/edit'" class="btn btn-secondary">수정
+                </button>
+            </div>
+
+            <div style="margin-bottom: 20px; font-size: 20px; font-weight: bold;">
+                {{ user.username }}
+            </div>
+            <div>
+                {{ user.name }}
+            </div>
+            <div>
+                {{ user.gender }}
+            </div>
+            <div>
+                {{ user.email }}
             </div>
         </div>
-    </form>
+        <div class="mypage_write_div">
+
+            <!--님이 작성한 글 전체보기 >-->
+            <div class="mypage_write">
+                <!--<a href="/user/mypage/{user_id}">내가 작성한 글 > </a>-->
+                <a href="/user/myposting">{{ user.username }}님이 작성한 글 전체보기 > </a>
+                {% if postings %}
+                <ul>
+                    {% for posting in postings|slice:'3' %}
+                    <li><b><a style="color: black" href="{% url 'post_detail' posting.post_id %}">{{ posting.title }}</a></b></li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>작성한 글이 없습니다.</p>
+                {% endif %}
+            </div>
+
+            <!--실선임-->
+            <hr style="border: solid 1px gray; width: 80%; margin-left: 60px; margin-top: 2px;">
+            
+            <!--님이 작성한 댓글 전체보기 >-->
+            <div>
+                <a href="/user/myposting">{{ user.username }}님이 작성한 댓글 전체보기 > </a>
+                {% if postings %}
+                <ul>
+                    {% for posting in postings|slice:'3' %}
+                    <li><b><a style="color: black" href="{% url 'post_detail' posting.post_id %}">{{ posting.title }}</a></b></li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>작성한 글이 없습니다.</p>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</form>
 
 {% endblock %}

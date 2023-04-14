@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import UserModel
 from posting.models import Posting
 from django.http import HttpResponse
@@ -78,13 +78,36 @@ def logout(request):
 # 민영
 
 def edit(request):
-    return render(request, 'user/edit.html')
+    if request.method == "POST":
+        username = request.POST.get('username', None)
+        gender = request.POST.get('gender', None)
+        name = request.POST.get('name', None)
+        email = request.POST.get('email', None)
+
+        # 기존 사용자 정보를 가져옴
+        # me = get_object_or_404(UserModel, pk=username)
+        me = get_object_or_404(UserModel, username=username)
+        # 하나도 변경된 사항이 없는 경우 -> alert창
+        if me.username == username and me.gender == gender and me.name == name and email == email:
+            return HttpResponse("<script>alert('변경사항이 없습니다!');location.href='/user/edit';</script>")
+        # 변경된 사항이 있는 경우 -> 저장
+        else:
+            me.username = username
+            me.gender = gender
+            me.name = name
+            me.email = email
+            me.save()
+
+            return HttpResponse("<script>alert('수정완료!');location.href='/user/mypage';</script>")
+    elif request.method == "GET":
+        return render(request, 'user/edit.html')
 
 
 def mypage(request):
         user = request.user
         if request.method == 'GET':
-            postings = Posting.objects.filter(username=user)
+            # .order_by('-create_at')은 정렬하기
+            postings = Posting.objects.filter(username=user).order_by('-create_at')
             return render(request, 'user/mypage.html', {'user': user, 'postings': postings})
         if request.method == 'POST':
             username = request.POST.get('username', None)
@@ -100,37 +123,12 @@ def mypage(request):
                 return HttpResponse('성공')
             else:
                 return HttpResponse('실패')
+            
 
 
-
-# def myposting(request):
-#     # get일 경우
-    
-    
-    
-#     if request.method == "GET":
-#         username = request.POST.get('username', None)
-#         # 일단 user정보 중 username(pk) 가져오기
-#         me = get_object_or_404(UserModel, username=username)
-
-#         # 로그인한 사용자와 게시물을 작성한 사용자가 같은 경우
-#         if me.username == 게시물을 작성한 사용자:
-#             return
-
-#     return render(request, 'user/myposting.html')
-
-
-# posting 모델 임포트함
-# 제목이랑 글쓴이만 출력
-def main(request):
-    # 모든 게시글 가져오기
-    posts = Posting.objects.all()
-    #posts라는 이름으로 가져온 모든 게시글을 템플릿에 전달
-    #html에서 for문에 사용
-    context = {
-        'posts':posts
-    }
-    return render(request, 'main.html', context)
-    
-
-
+def myposting(request):
+        user = request.user
+        if request.method == 'GET':
+            postings = Posting.objects.filter(username=user)
+            return render(request, 'user/myposting.html', {'user': user, 'postings': postings})
+            

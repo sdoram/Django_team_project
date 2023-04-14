@@ -9,6 +9,6 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     # path('mypage/{username}', views.mypage, name='mypage'),
     path('mypage/', views.mypage, name='mypage'),
-    path('edit/', views.edit, name='edit'),
     path('myposting/', views.myposting, name='myposting'),
+    path('edit/', views.edit, name='edit'),
 ]

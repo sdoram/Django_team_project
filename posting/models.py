@@ -5,7 +5,7 @@ class Posting(models.Model):
     username = models.ForeignKey(UserModel, on_delete=models.CASCADE, null=True, related_name='postings') 
     post_id = models.IntegerField(primary_key=True)
     main_content = models.TextField(null=True)
-    create_at = models.DateField(auto_now_add=True)
+    create_at = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=256)
     update_at = models.DateField(auto_now=True)
     

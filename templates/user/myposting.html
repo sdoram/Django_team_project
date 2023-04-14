@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .container{
+        border-radius: 10px;
+        margin: 10px 10px 10px 10px ;
+        padding: auto;
+    }
+    .page-link{
+        font-size: 13px;
+        background-color: gray;
+        color: white;
+    }
+    .pagination{
+        background-color: gray;
+    }
+    #bt_active{
+        background-color: beige;
+        color: beige;
+        
+    }
+    .page-item.active .page-link {
+        z-index: 1;
+        color: #555;
+        font-weight:bold;
+        background-color: #f1f1f1;
+        border-color: #ccc;
+    }
+</style>
+    <form method="get" action="/user/myposting">
+    <div class="container">
+        <h2>{{user.username}}님의 게시글</h2>
+        <br><br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>제목</th>
+                    <th>작성일</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for posting in postings %}
+                    <tr>
+                        <td><b><a style="color: black" href="{% url 'post_detail' posting.post_id %}">{{ posting.title }}</a></b></td>
+                        <td>{{ posting.create_at }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
+        <!-- 페이징처리 시작 -->
+    <ul  class="pagination justify-content-center">
+        <!-- 이전페이지 -->
+        {% if posting_list.has_previous %}
+        <li class="page-item" >
+            <a class="page-link" href="?page={{ posting_list.previous_page_number }}">이전</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+        {% endif %}
+        <!-- 페이지리스트 -->
+        {% for page_number in posting_list.paginator.page_range %}
+        {% if page_number >= posting_list.number|add:-5 and page_number <= posting_list.number|add:5 %}
+        {% if page_number == posting_list.number %}
+        <li class="page-item active"; aria-current="page">
+            <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+        </li>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if posting_list.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ posting_list.next_page_number }}">다음</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- 페이징처리 끝 -->
+        
+    </div>
+
+{% endblock %}

@@ -44,7 +44,7 @@
             <tbody>
             {% for post in posting_list %}
                 <tr>
-                    <td><a style="color: black" href="{% url 'post_detail' post.post_id %}">{{ post.title }}</a></td>
+                    <td><b><a style="color: black" href="{% url 'post_detail' post.post_id %}">{{ post.title }}</a></b></td>
                     <td>{{ post.username }}</td>
                     <td>{{ post.create_at }}</td>
                 </tr>

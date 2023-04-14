@@ -20,5 +20,7 @@ urlpatterns = [
     path('api/update-post/<int:post_id>/',
          views.api_update_post, name='api_update_post'),
 
+         
+
 
 ]
