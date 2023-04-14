@@ -6,6 +6,11 @@
 
 {% block content %}
 <style>
+    .container{
+        border-radius: 10px;
+        margin: 10px 10px 10px 10px ;
+        padding: auto;
+    }
     .page-link{
         font-size: 13px;
         background-color: gray;
@@ -29,14 +34,6 @@
 </style>
     <div class="container">
         <h2>게시글 목록{% if category %} - {{ category }}{% endif %}</h2>
-        <div class="btn-group" role="group" aria-label="카테고리 선택">
-            <a class="btn btn-secondary{% if not category %} active{% endif %}" href="{% url 'posting_list' %}">전체</a>
-            <a class="btn btn-secondary{% if category == 'codereview' %} active{% endif %}" href="{% url 'posting_list' 'codereview' %}">코드리뷰</a>
-            <a class="btn btn-secondary{% if category == 'course' %} active{% endif %}" href="{% url 'posting_list' 'course' %}">취업진로</a>
-            <a class="btn btn-secondary{% if category == 'coding_study' %} active{% endif %}" href="{% url 'posting_list' 'coding_study' %}">개발공부</a>
-            <a class="btn btn-secondary{% if category == 'free_board' %} active{% endif %}" href="{% url 'posting_list' 'free_board' %}">잡담</a>
-            <a class="btn btn-secondary{% if category == 'study' %} active{% endif %}" href="{% url 'posting_list' 'study' %}">스터디</a>
-        </div>
         <br><br>
         <table class="table">
             <thead>

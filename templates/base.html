@@ -99,7 +99,7 @@
             {% else %}
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        {{ user.name }} 님 반갑습니다.
+                        {{ user.username }} 님 반갑습니다.
                     </li>
                     <li class="nav-item active">
                         <button type="button" onclick="location.href = '{% url 'user:logout' %}?next={{request.path}}'" class="btn btn-secondary">로그아웃</button>
@@ -112,11 +112,12 @@
     </div>
     <!-- 네비 -->
     <div class="nav_main">
-        <a id="nav_text" href="/">코드리뷰</a>
-        <a id="nav_text" href="/">취업진로</a>
-        <a id="nav_text" href="/">개발공부</a>
-        <a id="nav_text" href="/">커뮤니티</a>
-        <a id="nav_text" href="/">스터디</a>
+        <a id="nav_text{% if not category %} {% endif %}" href="{% url 'posting_list' %}">전체목록</a>
+        <a id="nav_text{% if category == 'codereview' %} {% endif %}" href="{% url 'posting_list' 'codereview' %}">코드리뷰</a>
+        <a id="nav_text{% if category == 'course' %} {% endif %}" href="{% url 'posting_list' 'course' %}">취업진로</a>
+        <a id="nav_text{% if category == 'coding_study' %} {% endif %}" href="{% url 'posting_list' 'coding_study' %}">개발공부</a>
+        <a id="nav_text{% if category == 'free_board' %} {% endif %}" href="{% url 'posting_list' 'free_board' %}">잡담</a>
+        <a id="nav_text{% if category == 'study' %} {% endif %}" href="{% url 'posting_list' 'study' %}">스터디</a>
     </div>
 </nav>
 <div class="container">
