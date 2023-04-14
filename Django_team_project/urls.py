@@ -24,4 +24,6 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('posting/', include('posting.urls')),
     path('main/', views.main_view, name='main_view'),
+    path('', views.main_view, name='main_view'),
+    path('comment/',include('comment.urls')),
 ]

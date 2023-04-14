@@ -1,0 +1,28 @@
+<!-- templates/tweet/home.html -->
+
+
+
+<!-- 글을 작성 하는 곳 -->
+<div class="row mb-2">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="media">
+                    <div class="media-body">
+                        <h5 class="mt-0">나의 이야기를 적어주세요</h5>
+                        <p>
+                        <form action = "/comment/" method="post">
+                            {% csrf_token %}
+                            <div class="form-group mb-2">
+                                <textarea class="form-control" style="resize: none" name='comment_content' id="comment_content"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="float:right;">작성하기</button>
+                        </form>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
