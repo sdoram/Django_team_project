@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .mypage_div {
+        /*크기설정*/
+        width: 500px;
+        height: 900px;
+        /*화면 가운데로 오게 하려면 auto 해야함*/
+        margin: 50px auto;
+    }
+
+    .mypage_profile_div {
+        /*세로가운데 정렬*/
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        /*자식 div들을 세로로 정렬할때!!*/
+        flex-direction: column;
+
+        /*크기설정*/
+        width: 500px;
+        height: 600px;
+
+        /*라운드*/
+        border-radius: 50px;
+        /*박스선*/
+        border: solid 1px;
+        margin-bottom: 20px;
+
+        /*(부모)자식 위치잡기위해*/
+        position: relative;
+    }
+
+    .mypage_profile_img {
+        position: absolute;
+        top: 20px;
+        left: auto;
+        width: 100px;
+        height: 100px;
+        background-color: black;
+        border-radius: 50px;
+    }
+
+    .profile_edit {
+        margin-top: 100px;
+    }
+
+    .profile_edit div {
+        margin-bottom: 20px;
+    }
+
+    .profile_edit div p {
+        margin: 0%;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    #edit_submit {
+        width: 100px;
+        height: 50px;
+        border-radius: 20px;
+        margin-top: 30px;
+        margin-left: 50px;
+        color: white;
+        font-size: 20px;
+        background-color: black;
+        border: none;
+    }
+
+</style>
+<form class="mypage_form" method="post" action="/mypage/">
+    <div class="mypage_div">
+        <!--user db에서 가져와야함-->
+        <!--user 정보 수정 가능해야함-->
+        <div class="mypage_profile_div">
+            <div class="mypage_profile_img">
+
+            </div>
+            <div class="profile_edit">
+                <div>
+                    <p>ID      </p><input type="text" name="username" value="{{ user.username }}">
+                </div>
+                <div>
+                    <p>name    </p><input type="text" name="name" value="{{ user.name }}">
+                </div>
+                <div>
+                    <p>gender  </p><input type="text" name="gender" value="{{ user.gender }}">
+                </div>
+                <div>
+                    <p>email   </p><input type="text" name="email" value="{{ user.email }}">
+                </div>
+                <div>
+                    <button id="edit_submit" type="submit">수정하기</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+{% endblock %}
