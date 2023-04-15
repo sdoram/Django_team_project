@@ -20,7 +20,7 @@ def signup(request):
         name = request.POST.get('name', None)
         email = request.POST.get('email', None)
         gender = request.POST.get('gender', None)
-        
+
         # 빈값 체크 조건문 alert으로 모달창 출력
         if username == '':
             return HttpResponse("<script>alert('아이디를 입력해주세요!');location.href='/user/signup';</script>")
@@ -104,39 +104,44 @@ def edit(request):
 
 
 def mypage(request):
-        user = request.user
-        if request.method == 'GET':
-            # .order_by('-create_at')은 정렬하기
-            postings = Posting.objects.filter(username=user).order_by('-create_at')
-            return render(request, 'user/mypage.html', {'user': user, 'postings': postings})
-        if request.method == 'POST':
-            username = request.POST.get('username', None)
-            # name = request.POST.get('name', None)
-            # gender = request.POST.get('gender', None)
-            # email = request.POST.get('email', None)
-            if username:
-                user.username = username
-                # user.name = name
-                # user.gender = gender
-                # user.email = email
-                user.save()
-                return HttpResponse('성공')
-            else:
-                return HttpResponse('실패')
-            
-
+    user = request.user
+    if request.method == 'GET':
+        # .order_by('-create_at')은 정렬하기
+        postings = Posting.objects.filter(username=user).order_by('-create_at')
+        return render(request, 'user/mypage.html', {'user': user, 'postings': postings})
+    if request.method == 'POST':
+        username = request.POST.get('username', None)
+        # name = request.POST.get('name', None)
+        # gender = request.POST.get('gender', None)
+        # email = request.POST.get('email', None)
+        if username:
+            user.username = username
+            # user.name = name
+            # user.gender = gender
+            # user.email = email
+            user.save()
+            return HttpResponse('성공')
+        else:
+            return HttpResponse('실패')
 
 
 def myposting(request):
-        user = request.user
-        if request.method == 'GET':
-            postings = Posting.objects.filter(username=user)
-            return render(request, 'user/myposting.html', {'user': user, 'postings': postings})
-            
-
-def user_info(request, username):
-
+    user = request.user
     if request.method == 'GET':
-        user_info = get_object_or_404(UserModel, username=username)
-        postings = Posting.objects.filter(username=username)
-    return render(request, 'user/user_info.html', {'user_info': user_info, 'postings': postings})
+        postings = Posting.objects.filter(username=user)
+        return render(request, 'user/myposting.html', {'user': user, 'postings': postings})
+
+
+def search_info(request):
+    # 없는 유저 검색시 404 에러 발생함 고쳐야 하는 부분
+    if request.method == 'GET':
+        search_user = request.GET.get('search_user')
+        if search_user:
+            user_info = get_object_or_404(UserModel, username=search_user)
+            # 같이 search_user 써서 에러 남
+            postings = Posting.objects.filter(username=user_info)
+            return render(request, 'user/user_info.html', {'user_info': user_info, 'postings': postings})
+        else:
+            return redirect('/main')
+    else:
+        return redirect('/main')
