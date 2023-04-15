@@ -135,5 +135,8 @@ def myposting(request):
             
 
 def user_info(request, username):
-    user_info = get_object_or_404(UserModel, username=username)
-    return render(request, 'user/user_info.html', {'user_info': user_info})
+
+    if request.method == 'GET':
+        user_info = get_object_or_404(UserModel, username=username)
+        postings = Posting.objects.filter(username=username)
+    return render(request, 'user/user_info.html', {'user_info': user_info, 'postings': postings})
