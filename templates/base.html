@@ -17,6 +17,7 @@
         a {
             text-decoration-line: none;
         }
+
         .title-center {
             text-align: center;
             margin-top: 50px;
@@ -72,6 +73,9 @@
             margin-left: 2px;
             margin-bottom: 2px;
         }
+        .search_bar {
+            margin-right: 100px;
+        }
 
 
     </style>
@@ -89,65 +93,67 @@
                     </li>
                 </ul>
             </div>
-
-            <form class="form-inline my-2 my-lg-0">
-                {% if not user.is_authenticated %}
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <button type="button"
-                                    onclick="location.href = '{% url 'user:signup' %}?next={{ request.path }}'"
-                                    class="btn btn-secondary">회원가입
-                            </button>
-                        </li>
-                        <li class="nav-item active">
-                            <button type="button"
-                                    onclick="location.href = '{% url 'user:login' %}?next={{ request.path }}'"
-                                    class="btn btn-secondary">로그인
-                            </button>
-                        </li>
-                        {# next 테스트용 버튼 나중에 삭제하기               #}
-                        <button type="button" onclick="location.href = '/user/mypage'" class="btn btn-secondary">마이페이지
+            <form class="form-area search_bar" method="get" action='{% url 'user:search_info' %}'>
+                <div class=" form-group mt-2 mb-2">
+                    <input type="text" class="form-control" placeholder="유저 검색" id="search_user" name="search_user">
+                </div>
+            </form>
+            {% if not user.is_authenticated %}
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <button type="button"
+                                onclick="location.href = '{% url 'user:signup' %}?next={{ request.path }}'"
+                                class="btn btn-secondary">회원가입
                         </button>
-                        <button type="button" onclick="location.href = '{% url 'user:login' %}?next=/posting/create'"
-                                class="btn btn-secondary">글쓰기
+                    </li>
+                    <li class="nav-item active">
+                        <button type="button"
+                                onclick="location.href = '{% url 'user:login' %}?next={{ request.path }}'"
+                                class="btn btn-secondary">로그인
                         </button>
-                    </ul>
-                {% else %}
-                    <h3>{{ user.username }} 님 반갑습니다.</h3>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <button type="button"
-                                    onclick="location.href = '{% url 'user:logout' %}?next={{ request.path }}'"
-                                    class="btn btn-secondary">로그아웃
-                            </button>
-                            <button type="button" onclick="location.href = '/user/mypage'"
-                                    class="btn btn-secondary">
-                                마이페이지
-                            </button>
-                            <button type="button" onclick="location.href = '/posting/create'"
-                                    class="btn btn-secondary">
-                                글쓰기
-                            </button>
-                        </li>
-                    </ul>
-                {% endif %}
+                    </li>
+                    <button type="button" onclick="location.href = '{% url 'user:login' %}?next=/posting/create'"
+                            class="btn btn-secondary">글쓰기
+                    </button>
+                </ul>
+            {% else %}
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <h4>{{ user.username }} 님 반갑습니다.</h4>
+                        <button type="button"
+                                onclick="location.href = '{% url 'user:logout' %}?next={{ request.path }}'"
+                                class="btn btn-secondary">로그아웃
+                        </button>
+                        <button type="button" onclick="location.href = '/user/mypage'"
+                                class="btn btn-secondary">
+                            마이페이지
+                        </button>
+                        <button type="button" onclick="location.href = '/posting/create'"
+                                class="btn btn-secondary">
+                            글쓰기
+                        </button>
+                    </li>
+                </ul>
+            {% endif %}
             </form>
         </div>
     </nav>
 </div>
+</div>
 <!-- 네비 -->
 <div class="nav_main">
-    <div class="category-box"><b><a id="nav_text{% if not category %} {% endif %}" href="{% url 'posting_list' %}">전 체 목 록</a></b></div>
+    <div class="category-box"><b><a id="nav_text{% if not category %} {% endif %}" href="{% url 'posting_list' %}">전 체 목
+        록</a></b></div>
     <div class="category-box"><b><a id="nav_text{% if category == 'codereview' %} {% endif %}"
-                                 href="{% url 'posting_list' 'codereview' %}">코 드 리 뷰</a></b></div>
+                                    href="{% url 'posting_list' 'codereview' %}">코 드 리 뷰</a></b></div>
     <div class="category-box"><b><a id="nav_text{% if category == 'course' %} {% endif %}"
-                                 href="{% url 'posting_list' 'course' %}">취 업 진 로</a></b></div>
+                                    href="{% url 'posting_list' 'course' %}">취 업 진 로</a></b></div>
     <div class="category-box"><b><a id="nav_text{% if category == 'coding_study' %} {% endif %}"
-                                 href="{% url 'posting_list' 'coding_study' %}">개 발 공 부</a></b></div>
+                                    href="{% url 'posting_list' 'coding_study' %}">개 발 공 부</a></b></div>
     <div class="category-box"><b><a id="nav_text{% if category == 'free_board' %} {% endif %}"
-                                 href="{% url 'posting_list' 'free_board' %}">잡 담</a></b></div>
+                                    href="{% url 'posting_list' 'free_board' %}">잡 담</a></b></div>
     <div class="category-box"><b><a id="nav_text{% if category == 'study' %} {% endif %}"
-                                 href="{% url 'posting_list' 'study' %}">스 터 디</a></b></div>
+                                    href="{% url 'posting_list' 'study' %}">스 터 디</a></b></div>
 </div>
 </nav>
 <div class="container">

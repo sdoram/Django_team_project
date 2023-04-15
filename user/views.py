@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import UserModel
-from posting.models import Posting
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib.auth import get_user_model
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
@@ -20,17 +19,10 @@ def signup(request):
         name = request.POST.get('name', None)
         email = request.POST.get('email', None)
         gender = request.POST.get('gender', None)
-        
-        # 빈값 체크 조건문 alert으로 모달창 출력
-        if username == '':
-            return HttpResponse("<script>alert('아이디를 입력해주세요!');location.href='/user/signup';</script>")
-        if name == '':
-            return HttpResponse("<script>alert('이름을 입력해주세요!');location.href='/user/signup';</script>")
-        if password == '':
-            return HttpResponse("<script>alert('비밀번호를 입력해주세요!');location.href='/user/signup';</script>")
-        elif password != password2:
-            return HttpResponse("<script>alert('비밀번호가 일치하지 않습니다!');location.href='/user/signup';</script>")
+        next_url = request.GET.get('next') or '/main'
 
+        if password != password2:
+            return HttpResponse("<script>alert('비밀번호가 일치하지 않습니다!');location.href='/user/signup';</script>")
         else:
             exist_user = get_user_model().objects.filter(username=username)
             if exist_user:
@@ -45,8 +37,8 @@ def signup(request):
                 me = auth.authenticate(request, username=username, password=password)
                 if me is not None:
                     auth.login(request, me)
-                    return redirect('/main')
-        return redirect('/user/login')
+                    return redirect(next_url)
+            return redirect('/user/login')
 
 
 def login(request):
@@ -63,8 +55,8 @@ def login(request):
             auth.login(request, me)
             return redirect(next_url)
         else:
-            return redirect('/user/login')
-    elif request.method == 'GET':
+            return HttpResponse("<script>alert('정보가 일치하지 않습니다.');location.href='/user/login';</script>")
+    else:
         return render(request, 'user/login.html')
 
 
@@ -104,36 +96,44 @@ def edit(request):
 
 
 def mypage(request):
-        user = request.user
-        if request.method == 'GET':
-            # .order_by('-create_at')은 정렬하기
-            postings = Posting.objects.filter(username=user).order_by('-create_at')
-            return render(request, 'user/mypage.html', {'user': user, 'postings': postings})
-        if request.method == 'POST':
-            username = request.POST.get('username', None)
-            # name = request.POST.get('name', None)
-            # gender = request.POST.get('gender', None)
-            # email = request.POST.get('email', None)
-            if username:
-                user.username = username
-                # user.name = name
-                # user.gender = gender
-                # user.email = email
-                user.save()
-                return HttpResponse('성공')
-            else:
-                return HttpResponse('실패')
-            
-
+    if not request.user.is_authenticated:
+        return redirect("/main")
+    # 로그인 체크 후 돌려보내는 조건문 추가해야함
+    user = request.user
+    if request.method == 'GET':
+        # .order_by('-create_at')은 정렬하기
+        postings = Posting.objects.filter(username=user).order_by('-create_at')
+        return render(request, 'user/mypage.html', {'user': user, 'postings': postings})
+    if request.method == 'POST':
+        username = request.POST.get('username', None)
+        # name = request.POST.get('name', None)
+        # gender = request.POST.get('gender', None)
+        # email = request.POST.get('email', None)
+        if username:
+            user.username = username
+            # user.name = name
+            # user.gender = gender
+            # user.email = email
+            user.save()
+            return HttpResponse('성공')
+        else:
+            return HttpResponse('실패')
 
 
 def myposting(request):
-        user = request.user
-        if request.method == 'GET':
-            postings = Posting.objects.filter(username=user)
-            return render(request, 'user/myposting.html', {'user': user, 'postings': postings})
-            
+    user = request.user
+    if request.method == 'GET':
+        postings = Posting.objects.filter(username=user)
+        return render(request, 'user/myposting.html', {'user': user, 'postings': postings})
 
-def user_info(request, username):
-    user_info = get_object_or_404(UserModel, username=username)
-    return render(request, 'user/user_info.html', {'user_info': user_info})
+
+def search_info(request):
+    try:
+        # html 검색 입력값 가져 오기
+        search_user = request.GET.get('search_user')
+        user_info = get_object_or_404(UserModel, username=search_user)
+        postings = Posting.objects.filter(username=user_info).order_by('-create_at')
+        return render(request, 'user/user_info.html', {'user_info': user_info, 'postings': postings})
+    # next로 페이지 돌아올 때도 search_user 정보가 없어서 에러 발생함
+    except Http404:
+        return HttpResponse("<script>alert('존재하지 않는 유저입니다! or next로 돌아와서 에러 발생');location.href='/main';</script>")
