@@ -4,69 +4,97 @@
 <div class="detail_title"> {{ posting.title }}</div>
 {% endblock %}
 
+<style>
+.comment-card {
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.comment-card .card-header {
+  background-color: #f5f5f5;
+  border-bottom: none;
+}
+
+.comment-card .card-body {
+  border-top: none;
+}
+</style>
+
 {% block content %}
-<div class="container">
-  <div class="title_box">
-    <h2 class="posting_detail_title">{{ posting.title }}</h2>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">{{ posting.title }}</h5>
-      <p class="card-text">{{ posting.main_content }}</p>
-      <p class="card-text">{{ posting.created_at }}</p>
-      <p class="card-text">{{ posting.updated_at }}</p>
-      <p class="card-text">{{ posting.category }}</p>
-    </div>
-  </div>
-  <a class="btn btn-secondary" href="{% url 'posting_list' %}">목록으로</a>
-  {% if user.is_authenticated and user == posting.username %}
-  <a class="btn btn-secondary" href="{% url 'update_post' posting_id=posting.posting_id %}">수정하기</a>
-  <form action="{% url 'delete_post' pk=posting.posting_id %}" method="post" style="display: inline;">
-    {% csrf_token %}
-    <input type="submit" value="삭제하기" class="btn btn-secondary">
-  </form>
-  {% endif %}
-
-  <br>
-  <h3>댓글</h3>
-  <div class="card-body">
-    <div class="commnt_list">
-      {% for comment in comment_list %}
-      <div>
-        <p class="commnt_text">작성자: {{ comment.username }}</p>
-        <p class="commnt_text">댓글내용: {{ comment.comment_content }}</p>
-        <p class="commnt_text">{{ comment.create_at }}</p>
-        {% if comment.can_modify %}
-          <a class="btn btn-secondary" href="{% url 'update_comment' comment_id=comment.comment_id %}">수정하기</a>
-          <form action="{% url 'delete_comment' comment_id=comment.comment_id %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <input type="submit" value="삭제하기" class="btn btn-secondary">
-          </form>
-        {% endif %}
+<br>
+<div class="comment-card">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-header">{{ posting.title }}</h5>
+          <p class="card-text">{{ posting.main_content }}</p>
+          <small class="card-text" style="float: right;">{{ posting.create_at }}</small>
+          <p class="card-text">{{ posting.category }}</p>
+        </div>
       </div>
-      {% endfor %}
-    </div>
-    
-    <div class="media">
-      <div class="media-body">
-        <h5 class="mt-0">댓글을 작성해주세요</h5>
-        <p>
-            {% if posting %}
-            <form action="{% url 'add_comment' posting_id=posting.posting_id %}" method="post">
-          {% endif %}
-          
-        
-
-          {% csrf_token %}
-          <div class="form-group mb-2">
-            <textarea class="form-control" style="resize: none" name='comment_content' id="comment_content"></textarea>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">댓글</h3>
+          <br>
+        </div>
+        <div class="panel-body">
+          {% for comment in comment_list %}
+          <div class="col-md-8">
+            <div class="comment-card">
+              <div class="card-header">
+                <small>작성자: {{ comment.username }}</small>
+                <small style="float: right;">{{ comment.create_at }} </small>
+              </div>
+            </div>
           </div>
-          <button type="submit" class="btn btn-secondary" style="float:right;">작성하기</button>
-          
-        </form>
-        </p>
+              <div class="card-body">
+                <div class="col-md-8">
+                  <p class="card-text">{{ comment.comment_content }}</p>
+                  {% if comment.can_modify %}
+                  <a class="btn btn-secondary btn-sm" href="{% url 'update_comment' comment_id=comment.comment_id %}"style="float: right;">수정</a>
+                  <form action="{% url 'delete_comment' comment_id=comment.comment_id %}" method="post" style="display: inline;">
+                  {% csrf_token %}
+                  <input type="submit" value="삭제" class="btn btn-secondary btn-sm"style="float: right;">
+                  </form>
+                  {% endif %}
+                </div>
+              </div>
+          {% endfor %}
+          <div class="comment-card">
+            <div class="card-header">
+              <h5 class="card-title">댓글 작성하기</h5>
+            </div>
+            <div class="card-body">
+              <form action="{% url 'add_comment' posting_id=posting.posting_id %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <textarea class="form-control" rows="3" name="comment_content" placeholder="댓글 내용을 입력하세요"></textarea>
+                </div>
+                <button style="float: right;" type="submit" class="btn btn-secondary">댓글등록</button>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <div class="col-md-4">
+      {% if user.is_authenticated and user == posting.username %}
+        <div class="card">
+          <div class="card-body">
+            <a class="btn btn-secondary" href="{% url 'update_post' posting_id=posting.posting_id %}">수정하기</a>
+            <form action="{% url 'delete_comment' comment_id=comment.comment_id %}" method="post" style="display: inline;">
+              {% csrf_token %}
+              <input type="submit" value="삭제하기" class="btn btn-secondary">
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endif %}
   </div>
 </div>
+</div>
 {% endblock %}
+
+

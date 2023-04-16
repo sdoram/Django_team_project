@@ -6,7 +6,7 @@ from .models import Comment
 from posting.models import Posting
 
 
-# @login_required(login_url='/user/login')
+
 # def add_comment(request, posting_id):
 #     if request.method == 'POST':
 #         comment_content = request.POST.get('comment_content')
@@ -17,6 +17,7 @@ from posting.models import Posting
 #     else:
 #         return HttpResponse('Invalid Access')
 
+@login_required(login_url='/user/login')
 def add_comment(request, posting_id):
     if request.method == 'POST':
         content = request.POST.get('comment_content')
