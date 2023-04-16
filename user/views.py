@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from posting.models import Posting
+from comment.models import Comment
 
 
 def signup(request):
@@ -37,7 +38,8 @@ def signup(request):
                 me = auth.authenticate(request, username=username, password=password)
                 if me is not None:
                     auth.login(request, me)
-                    return redirect(next_url)
+                    # return redirect(next_url)
+                    return HttpResponse(f"<script>alert('{name}님 환영합니다.');location.href='{next_url}';</script>")
             return redirect('/user/login')
 
 
@@ -133,7 +135,9 @@ def search_info(request):
         search_user = request.GET.get('search_user')
         user_info = get_object_or_404(UserModel, username=search_user)
         postings = Posting.objects.filter(username=user_info).order_by('-create_at')
-        return render(request, 'user/user_info.html', {'user_info': user_info, 'postings': postings})
+        # comments create_at DateTimeField로 교체해야함
+        comments = Comment.objects.filter(username=user_info).order_by('-create_at')
+        return render(request, 'user/user_info.html', {'user_info': user_info, 'postings': postings, 'comments':comments})
     # next로 페이지 돌아올 때도 search_user 정보가 없어서 에러 발생함
     except Http404:
-        return HttpResponse("<script>alert('존재하지 않는 유저입니다! or next로 돌아와서 에러 발생');location.href='/main';</script>")
+        return HttpResponse(f"<script>alert('{search_user}은 존재하지 않는 유저입니다! or next로 돌아오면서 search_user값이 없어서 에러 발생');location.href='/main';</script>")
