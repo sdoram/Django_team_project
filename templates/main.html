@@ -2,89 +2,95 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<style>
-    .banner img {
-        margin-top: 20px;
-        width: 100%;
-    }
+    <style>
+        .banner img {
+            margin-top: 20px;
+            width: 100%;
+        }
 
-    .main_posts {
-        /*(부모)자식 위치잡기위해*/
-        position: relative;
-    }
-
-    /*메인 리스트박스*/
-    .main_post {
-        margin: 20px;
-        padding: 5px;
-        width: 500px;
-        height: 300px;
-        border-top: 1px solid rgb(185, 185, 185);
-        border-bottom: 1px solid rgb(185, 185, 185);
-        /*텍스트가 표시되는 영역을 벗어났을 때 남은 글자 안보이게 함*/
-        overflow: hidden;
-    }
-
-    .main_post_div {
-        margin-bottom: 10px;
-    }
-
-    .main_post_list li {
-        list-style-type: none;
-        margin-bottom: 6px;
-        /*div 양쪽정렬*/
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .main_post_list li div {
-        display: inline-block;
-    }
-
-    .main_headline {
-        /*하이퍼링크 밑줄 없애기*/
-        text-decoration-line: none;
-        color: black;
-        font-size: 20px;
-        /*글씨 굵게*/
-        font-weight: bold;
-    }
-
-    #posting_list_id {
-        text-decoration-line: none;
-        color: black;
-        /*길이 제한*/
-        display: block;
-        width: 350px;
-        /*텍스트가 표시되는 영역을 벗어났을 때 남은 글자 안보이게 함*/
-        overflow: hidden;
-        /*생략기호 사용*/
-        text-overflow: ellipsis;
-        /*텍스트가 길어지면 줄 바꿈을 하지 않도록 함*/
-        white-space: nowrap;
-
-    }
+        .main_posts {
+            /*(부모)자식 위치잡기위해*/
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+        }
 
 
+        /*메인 리스트박스*/
+        .main_post {
+            margin: 20px;
+            padding: 5px;
+            width: 500px;
+            height: 300px;
+            border-top: 1px solid rgb(185, 185, 185);
+            border-bottom: 1px solid rgb(185, 185, 185);
+            /*텍스트가 표시되는 영역을 벗어났을 때 남은 글자 안보이게 함*/
+            overflow: hidden;
+        {#margin-right: auto;#}{#margin-left: auto;#}
 
-</style>
-<div class="banner">
-    <img src="https://i.postimg.cc/kgSxrYC3/image.png" />
-</div>
-<form method="get" action="/main">
-    <div class="main_posts">
+        }
 
-        <!--카테고리별로 나눠져서 보기-->
-        <!--코드리뷰-->
-        <div class="main_post">
-            <div class="main_post_div">
-                <div class="main_headline_div">
-                    <a class="main_headline" href="/">코드리뷰</a>
-                    <hr style="border: solid 1px red; width: 15%; margin-top: 3px;">
+        .main_post_div {
+            margin-bottom: 10px;
+        }
+
+        .main_post_list li {
+            list-style-type: none;
+            margin-bottom: 6px;
+            /*div 양쪽정렬*/
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .main_post_list li div {
+            display: inline-block;
+        }
+
+        .main_headline {
+            /*하이퍼링크 밑줄 없애기*/
+            text-decoration-line: none;
+            color: black;
+            font-size: 20px;
+            /*글씨 굵게*/
+            font-weight: bold;
+        }
+
+        #posting_list_id {
+            text-decoration-line: none;
+            color: black;
+            /*길이 제한*/
+            display: block;
+            width: 350px;
+            /*텍스트가 표시되는 영역을 벗어났을 때 남은 글자 안보이게 함*/
+            overflow: hidden;
+            /*생략기호 사용*/
+            text-overflow: ellipsis;
+            /*텍스트가 길어지면 줄 바꿈을 하지 않도록 함*/
+            white-space: nowrap;
+
+        }
+
+        .
+
+
+    </style>
+    <div class="banner">
+        <img src="https://i.postimg.cc/kgSxrYC3/image.png"/>
+    </div>
+    <form method="get" action="/main">
+        <div class="main_posts row row-cols-1 row-cols-md-2 g-4">
+
+            <!--카테고리별로 나눠져서 보기-->
+            <!--코드리뷰-->
+            <div class="main_post">
+                <div class="main_post_div">
+                    <div class="main_headline_div">
+                        <a class="main_headline" href="/">코드리뷰</a>
+                        <hr style="border: solid 1px red; width: 15%; margin-top: 3px;">
+                    </div>
                 </div>
-            </div>
-            <!--여기 리스트를 하나만 작성한 다음에 아래 착착붙게 반복문 사용-->
-            <!-- <div>
+                <!--여기 리스트를 하나만 작성한 다음에 아래 착착붙게 반복문 사용-->
+                <!-- <div>
                 
                 {% if postings %}
                 <ul>
@@ -103,148 +109,149 @@
                         <p>작성된 글이 없습니다.</p>
                 {% endif %}
             </div> -->
-            <div class="main_post_list" id="post_list_codereview">
-                {% if postings %}
-                <ul>
-                    {% for posting in postings %}
-                    {% if posting.category == 'codereview' %}
-                    <li>
-                        <div class="posting_list_div">
+                <div class="main_post_list" id="post_list_codereview">
+                    {% if postings %}
+                        <ul>
+                            {% for posting in postings %}
+                                {% if posting.category == 'codereview' %}
+                                    <li>
+                                    <div class="posting_list_div">
 
-                            <a id="posting_list_id">{{ posting.title }}</a>
-                        </div>
-                        <div class="posting_id_div">
-                            <span class="posting_id">{{ posting.username }}</span>
-                        </div>
-                        {% endif %}
-                        {% endfor %}
-                </ul>
-                {% else %}
-                <p>작성된 글이 없습니다.</p>
-                {% endif %}
-            </div>
-        </div>
-
-        <!--취업진로-->
-        <div class="main_post">
-            <div class="main_post_div">
-                <div class="main_headline_div">
-                    <a class="main_headline" href="/">취업진로</a>
-                    <hr style="border: solid 1px red; width: 15%; margin-top: 3px;">
+                                        <a id="posting_list_id">{{ posting.title }}</a>
+                                    </div>
+                                    <div class="posting_id_div">
+                                        <span class="posting_id">{{ posting.username }}</span>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>작성된 글이 없습니다.</p>
+                    {% endif %}
                 </div>
             </div>
-            <div class="main_post_list" id="post_list_course">
-                {% if postings %}
-                <ul>
-                    {% for posting in postings %}
-                    {% if posting.category == 'course' %}
-                    <li>
-                        <div class="posting_list_div">
 
-                            <a id="posting_list_id">{{ posting.title }}</a>
-                        </div>
-                        <div class="posting_id_div">
-                            <span class="posting_id">{{ posting.username }}</span>
-                        </div>
-                        {% endif %}
-                        {% endfor %}
-                </ul>
-                {% else %}
-                <p>작성된 글이 없습니다.</p>
-                {% endif %}
-            </div>
-        </div>
 
-        <!--개발공부-->
-        <div class="main_post">
-            <div class="main_post_div">
-                <div class="main_headline_div">
-                    <a class="main_headline" href="/">개발공부</a>
-                    <hr style="border: solid 1px red; width: 15%; margin-top: 3px;">
+            <!--취업진로-->
+            <div class="main_post">
+                <div class="main_post_div">
+                    <div class="main_headline_div">
+                        <a class="main_headline" href="/">취업진로</a>
+                        <hr style="border: solid 1px red; width: 15%; margin-top: 3px;">
+                    </div>
+                </div>
+                <div class="main_post_list" id="post_list_course">
+                    {% if postings %}
+                        <ul>
+                            {% for posting in postings %}
+                                {% if posting.category == 'course' %}
+                                    <li>
+                                    <div class="posting_list_div">
+
+                                        <a id="posting_list_id">{{ posting.title }}</a>
+                                    </div>
+                                    <div class="posting_id_div">
+                                        <span class="posting_id">{{ posting.username }}</span>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>작성된 글이 없습니다.</p>
+                    {% endif %}
                 </div>
             </div>
-            <div class="main_post_list" id="post_list_coding_study">
-                {% if postings %}
-                <ul>
-                    {% for posting in postings %}
-                    {% if posting.category == 'coding_study' %}
-                    <li>
-                        <div class="posting_list_div">
 
-                            <a id="posting_list_id">{{ posting.title }}</a>
-                        </div>
-                        <div class="posting_id_div">
-                            <span class="posting_id">{{ posting.username }}</span>
-                        </div>
-                        {% endif %}
-                        {% endfor %}
-                </ul>
-                {% else %}
-                <p>작성된 글이 없습니다.</p>
-                {% endif %}
-            </div>
-        </div>
+            <!--개발공부-->
+            <div class="main_post">
+                <div class="main_post_div">
+                    <div class="main_headline_div">
+                        <a class="main_headline" href="/">개발공부</a>
+                        <hr style="border: solid 1px red; width: 15%; margin-top: 3px;">
+                    </div>
+                </div>
+                <div class="main_post_list" id="post_list_coding_study">
+                    {% if postings %}
+                        <ul>
+                            {% for posting in postings %}
+                                {% if posting.category == 'coding_study' %}
+                                    <li>
+                                    <div class="posting_list_div">
 
-        <!--스터디-->
-        <div class="main_post">
-            <div class="main_post_div">
-                <div class="main_headline_div">
-                    <a class="main_headline" href="/">스터디</a>
-                    <hr style="border: solid 1px red; width: 15%; margin-top: 3px;">
+                                        <a id="posting_list_id">{{ posting.title }}</a>
+                                    </div>
+                                    <div class="posting_id_div">
+                                        <span class="posting_id">{{ posting.username }}</span>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>작성된 글이 없습니다.</p>
+                    {% endif %}
                 </div>
             </div>
-            <div class="main_post_list" id="post_list_study">
-                {% if postings %}
-                <ul>
-                    {% for posting in postings %}
-                    {% if posting.category == 'study' %}
-                    <li>
-                        <div class="posting_list_div">
 
-                            <a id="posting_list_id">{{ posting.title }}</a>
-                        </div>
-                        <div class="posting_id_div">
-                            <span class="posting_id">{{ posting.username }}</span>
-                        </div>
-                        {% endif %}
-                        {% endfor %}
-                </ul>
-                {% else %}
-                <p>작성된 글이 없습니다.</p>
-                {% endif %}
-            </div>
-        </div>
+            <!--스터디-->
+            <div class="main_post">
+                <div class="main_post_div">
+                    <div class="main_headline_div">
+                        <a class="main_headline" href="/">스터디</a>
+                        <hr style="border: solid 1px red; width: 15%; margin-top: 3px;">
+                    </div>
+                </div>
+                <div class="main_post_list" id="post_list_study">
+                    {% if postings %}
+                        <ul>
+                            {% for posting in postings %}
+                                {% if posting.category == 'study' %}
+                                    <li>
+                                    <div class="posting_list_div">
 
-        <!--잡담-->
-        <div class="main_post">
-            <div class="main_post_div">
-                <div class="main_headline_div">
-                    <a class="main_headline" href="/">잡담</a>
-                    <hr style="border: solid 1px red; width: 15%; margin-top: 3px;">
+                                        <a id="posting_list_id">{{ posting.title }}</a>
+                                    </div>
+                                    <div class="posting_id_div">
+                                        <span class="posting_id">{{ posting.username }}</span>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>작성된 글이 없습니다.</p>
+                    {% endif %}
                 </div>
             </div>
-            <div class="main_post_list" id="post_list_free_board">
-                {% if postings %}
-                <ul>
-                    {% for posting in postings %}
-                    {% if posting.category == 'free_board' %}
-                    <li>
-                        <div class="posting_list_div">
 
-                            <a id="posting_list_id">{{ posting.title }}</a>
-                        </div>
-                        <div class="posting_id_div">
-                            <span class="posting_id">{{ posting.username }}</span>
-                        </div>
-                        {% endif %}
-                        {% endfor %}
-                </ul>
-                {% else %}
-                <p>작성된 글이 없습니다.</p>
-                {% endif %}
+            <!--잡담-->
+            <div class="main_post">
+                <div class="main_post_div">
+                    <div class="main_headline_div">
+                        <a class="main_headline" href="/">잡담</a>
+                        <hr style="border: solid 1px red; width: 15%; margin-top: 3px;">
+                    </div>
+                </div>
+                <div class="main_post_list" id="post_list_free_board">
+                    {% if postings %}
+                        <ul>
+                            {% for posting in postings %}
+                                {% if posting.category == 'free_board' %}
+                                    <li>
+                                    <div class="posting_list_div">
+
+                                        <a id="posting_list_id">{{ posting.title }}</a>
+                                    </div>
+                                    <div class="posting_id_div">
+                                        <span class="posting_id">{{ posting.username }}</span>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>작성된 글이 없습니다.</p>
+                    {% endif %}
+                </div>
             </div>
-        </div>
-    </div> <!--main_post-->
-    </div><!--main_posts-->
-</form>
+        </div> <!--main_post-->
+        </div><!--main_posts-->
+    </form>
 {% endblock %}
