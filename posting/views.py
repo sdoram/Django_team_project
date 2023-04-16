@@ -9,16 +9,16 @@ from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 
 
-
-# 개시글 상세 보기
-def posting_detail_view(request, post_id):
-    posting = get_object_or_404(Posting, post_id=post_id)
-    comment_list = Comment.objects.order_by('-create_at')
+#게시글 상세보기
+def posting_detail_view(request, posting_id):
+    posting = get_object_or_404(Posting, posting_id=posting_id)
+    comment_list = Comment.objects.filter(posting=posting).order_by('-create_at')
     context = {
         'posting': posting,
-        'comment_list' : comment_list
+        'comment_list': comment_list
     }
     return render(request, 'posting/posting_detail.html', context)
+
 
 
 #게시글 리스트
@@ -70,7 +70,7 @@ def create_post(request):
                                          main_content=main_content,
                                          category=category)
 
-        return redirect('posting_detail', post_id=posting.post_id)
+        return redirect('posting_detail', posting_id=posting.posting_id)
     else:
         return render(request, 'posting/posting_admin.html')
 
@@ -81,8 +81,8 @@ def create_post(request):
 
 # 게시글 수정
 @login_required(login_url='login')
-def update_post(request, post_id):
-    posting = get_object_or_404(Posting, post_id=post_id, username=request.user)
+def update_post(request, posting_id):
+    posting = get_object_or_404(Posting, posting_id=posting_id, username=request.user)
 
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -94,7 +94,7 @@ def update_post(request, post_id):
         posting.category = category
         posting.save()
 
-        return redirect(reverse('posting_detail', kwargs={'post_id': post_id}))
+        return redirect(reverse('posting_detail', kwargs={'posting_id': posting_id}))
     else:
         context = {'posting': posting}
         return render(request, 'posting/posting_admin.html', context)
@@ -103,7 +103,7 @@ def update_post(request, post_id):
 # 게시글 삭제
 @login_required(login_url='login')
 def delete_post(request, pk):
-    posting = get_object_or_404(Posting, post_id=pk, username=request.user)
+    posting = get_object_or_404(Posting, posting_id=pk, username=request.user)
     if request.method == 'POST':
         posting.delete()
         return redirect('posting_list')
@@ -124,7 +124,7 @@ def api_create_post(request):
         category = request.POST.get('category')
         post = Posting(title=title, main_content=main_content, category=category)
         post.save()
-        response_data = {'success': True, 'post_id': post.post_id}
+        response_data = {'success': True, 'posting_id': post.posting_id}
         return JsonResponse(response_data)
     elif request.method == 'GET':
         response_data = {'success': True, 'message': 'API is working.'}
@@ -136,20 +136,20 @@ def api_create_post(request):
     
 
 @csrf_exempt
-def api_update_post(request, post_id):
+def api_update_post(request, posting_id):
     if request.method == 'PUT':
         title = request.POST.get('title')
         main_content = request.POST.get('main_content')
         category = request.POST.get('category')
 
-        post = get_object_or_404(Posting, post_id=post_id, user_id=request.user)
+        post = get_object_or_404(Posting, posting_id=posting_id, user_id=request.user)
         post.title = title
         post.main_content = main_content
         post.category = category
         post.save()
 
         data = {
-            'post_id': post.post_id,
+            'posting_id': post.posting_id,
             'title': post.title,
             'main_content': post.main_content,
             'category': post.category
