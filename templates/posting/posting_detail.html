@@ -36,16 +36,17 @@
         <p class="commnt_text">작성자: {{ comment.username }}</p>
         <p class="commnt_text">댓글내용: {{ comment.comment_content }}</p>
         <p class="commnt_text">{{ comment.create_at }}</p>
-        {% if user.is_authenticated and user == comment.username %}
-        <a class="btn btn-secondary" href="{% url 'update_comment' comment_id=comment.comment_id %}">수정하기</a>
-        <form action="{% url 'delete_comment' comment_id=comment.comment_id %}" method="post" style="display: inline;">
-          {% csrf_token %}
-          <input type="submit" value="삭제하기" class="btn btn-secondary">
-        </form>
+        {% if comment.can_modify %}
+          <a class="btn btn-secondary" href="{% url 'update_comment' comment_id=comment.comment_id %}">수정하기</a>
+          <form action="{% url 'delete_comment' comment_id=comment.comment_id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <input type="submit" value="삭제하기" class="btn btn-secondary">
+          </form>
         {% endif %}
       </div>
       {% endfor %}
     </div>
+    
     <div class="media">
       <div class="media-body">
         <h5 class="mt-0">댓글을 작성해주세요</h5>
