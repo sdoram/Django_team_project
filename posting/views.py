@@ -9,15 +9,36 @@ from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 
 
-#게시글 상세보기
+# #게시글 상세보기
+# def posting_detail_view(request, posting_id):
+#     posting = get_object_or_404(Posting, posting_id=posting_id)
+#     comment_list = Comment.objects.filter(posting=posting).order_by('-create_at')
+#     context = {
+#         'posting': posting,
+#         'comment_list': comment_list
+#     }
+#     return render(request, 'posting/posting_detail.html', context)
+
+# 새로운 디테일 뷰 
 def posting_detail_view(request, posting_id):
     posting = get_object_or_404(Posting, posting_id=posting_id)
-    comment_list = Comment.objects.filter(posting=posting).order_by('-create_at')
+    comment_list = posting.comment_set.order_by('-create_at')
+
     context = {
         'posting': posting,
-        'comment_list': comment_list
+        'comment_list': comment_list,
     }
+
+    # 댓글 수정, 삭제 버튼 보여주기
+    if request.user.is_authenticated:
+        for comment in comment_list:
+            if request.user == comment.username:
+                comment.can_modify = True
+            else:
+                comment.can_modify = False
+
     return render(request, 'posting/posting_detail.html', context)
+
 
 
 
@@ -155,6 +176,7 @@ def api_update_post(request, posting_id):
             'category': post.category
         }
         return JsonResponse(data)
+
 
 
 
