@@ -6,15 +6,25 @@ from .models import Comment
 from posting.models import Posting
 
 
-@login_required(login_url='/user/login')
-def add_comment(request, post_id):
+# @login_required(login_url='/user/login')
+# def add_comment(request, posting_id):
+#     if request.method == 'POST':
+#         comment_content = request.POST.get('comment_content')
+#         posting_id = get_object_or_404(Posting, posting_id=posting_id)
+#         comment = Comment(posting_id=posting_id, comment_content=comment_content)
+#         comment.save()
+#         return redirect('posting_detail', posting_id=posting_id)
+#     else:
+#         return HttpResponse('Invalid Access')
+
+def add_comment(request, posting_id):
     if request.method == 'POST':
-        user = request.user
-        content = request.POST.get('content')
-        post = get_object_or_404(Posting, post_id=post_id)
-        comment = Comment(author=user, post_id=post_id, content=content)
+        content = request.POST.get('comment_content')
+        posting = get_object_or_404(Posting, posting_id=posting_id)
+        author = request.user
+        comment = Comment(posting_id=posting.posting_id, username=author, comment_content=content)
         comment.save()
-        return redirect('posting_detail', post_id=post_id)
+        return redirect('posting_detail', posting_id=posting_id)
     else:
         return HttpResponse('Invalid Access')
 
@@ -25,7 +35,7 @@ def update_comment(request, comment_id):
     if request.method == 'POST':
         comment.content = request.POST.get('content')
         comment.save()
-        return redirect('posting_detail', post_id=comment.post.post_id)
+        return redirect('posting_detail', posting_id=comment.post.posting_id)
     else:
         context = {'comment': comment}
         return render(request, 'comment/edit_comment.html', context)
@@ -34,9 +44,9 @@ def update_comment(request, comment_id):
 @login_required(login_url='/user/login')
 def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id, username=request.user)
-    post_id = comment.posting.post_id
+    posting_id = comment.posting.posting_id
     comment.delete()
-    return redirect('posting_detail', post_id=post_id)
+    return redirect('posting_detail', posting_id=posting_id)
 
 
 @csrf_exempt
@@ -61,8 +71,8 @@ def api_add_comment(request):
     if request.method == 'POST':
         user = request.user
         content = request.POST.get('content')
-        post_id = request.POST.get('post_id')
-        post = get_object_or_404(Posting, post_id=post_id)
+        posting_id = request.POST.get('posting_id')
+        post = get_object_or_404(Posting, posting_id=posting_id)
         comment = Comment(author=user, post=post, content=content)
         comment.save()
         data = {

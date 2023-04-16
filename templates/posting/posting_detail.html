@@ -20,8 +20,8 @@
   </div>
   <a class="btn btn-secondary" href="{% url 'posting_list' %}">목록으로</a>
   {% if user.is_authenticated and user == posting.username %}
-  <a class="btn btn-secondary" href="{% url 'update_post' post_id=posting.post_id %}">수정하기</a>
-  <form action="{% url 'delete_post' pk=posting.post_id %}" method="post" style="display: inline;">
+  <a class="btn btn-secondary" href="{% url 'update_post' posting_id=posting.posting_id %}">수정하기</a>
+  <form action="{% url 'delete_post' pk=posting.posting_id %}" method="post" style="display: inline;">
     {% csrf_token %}
     <input type="submit" value="삭제하기" class="btn btn-secondary">
   </form>
@@ -51,7 +51,7 @@
         <h5 class="mt-0">댓글을 작성해주세요</h5>
         <p>
             {% if posting %}
-            <form action="{% url 'add_comment' post_id=posting.post_id %}" method="post">
+            <form action="{% url 'add_comment' posting_id=posting.posting_id %}" method="post">
           {% endif %}
           
         

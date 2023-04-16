@@ -42,7 +42,7 @@
             <tbody>
                 {% for posting in postings %}
                     <tr>
-                        <td><b><a style="color: black" href="{% url 'post_detail' posting.post_id %}">{{ posting.title }}</a></b></td>
+                        <td><b><a style="color: black" href="{% url 'posting_detail' posting.posting_id %}">{{ posting.title }}</a></b></td>
                         <td>{{ posting.create_at }}</td>
                     </tr>
                 {% endfor %}

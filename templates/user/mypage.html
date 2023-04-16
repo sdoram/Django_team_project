@@ -155,7 +155,7 @@
                 {% if postings %}
                 <ul>
                     {% for posting in postings|slice:'3' %}
-                    <li><b><a style="color: black" href="{% url 'post_detail' posting.post_id %}">{{ posting.title }}</a></b></li>
+                    <li><b><a style="color: black" href="{% url 'posting_detail' posting.posting_id %}">{{ posting.title }}</a></b></li>
                     {% endfor %}
                 </ul>
                 {% else %}
@@ -172,7 +172,7 @@
                 {% if postings %}
                 <ul>
                     {% for posting in postings|slice:'3' %}
-                    <li><b><a style="color: black" href="{% url 'post_detail' posting.post_id %}">{{ posting.title }}</a></b></li>
+                    <li><b><a style="color: black" href="{% url 'posting_detail' posting.posting_id %}">{{ posting.title }}</a></b></li>
                     {% endfor %}
                 </ul>
                 {% else %}
