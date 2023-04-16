@@ -1,28 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Posting
-from comment.models import Comment
-from user.models import UserModel
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger # 페이지 페이징 처리 모듈
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 
 
-# #게시글 상세보기
-# def posting_detail_view(request, posting_id):
-#     posting = get_object_or_404(Posting, posting_id=posting_id)
-#     comment_list = Comment.objects.filter(posting=posting).order_by('-create_at')
-#     context = {
-#         'posting': posting,
-#         'comment_list': comment_list
-#     }
-#     return render(request, 'posting/posting_detail.html', context)
-
-# 새로운 디테일 뷰 
+# 게시글 상세보기 
 def posting_detail_view(request, posting_id):
     posting = get_object_or_404(Posting, posting_id=posting_id)
-    comment_list = posting.comment_set.order_by('-create_at')
+    comment_list = posting.comment_set.order_by('-create_at') # 댓글 리스트 시간역순으로 모아보기
 
     context = {
         'posting': posting,
@@ -30,10 +18,10 @@ def posting_detail_view(request, posting_id):
     }
 
     # 댓글 수정, 삭제 버튼 보여주기
-    if request.user.is_authenticated:
+    if request.user.is_authenticated: # 유저 판별코드 
         for comment in comment_list:
             if request.user == comment.username:
-                comment.can_modify = True
+                comment.can_modify = True #can_modify 활용 유저 판별해서 보여주기
             else:
                 comment.can_modify = False
 
@@ -47,20 +35,18 @@ def posting_list(request, category=None):
     if category:
         # 모델에서 choices 옵션으로 정의한 값('codereview')으로 필터링합니다.
         posting_list = Posting.objects.filter(
-            category=category.lower()).order_by('-create_at')
+            category=category.lower()).order_by('-create_at') # 카테고리별로 시간 내림차순 정렬
     else:
-        posting_list = Posting.objects.all().order_by('-create_at')
+        posting_list = Posting.objects.all().order_by('-create_at') # 전체보기 시간 내림차순 정렬
 
-    paginator = Paginator(posting_list, 6)  
+    paginator = Paginator(posting_list, 6)  #게시글 6개가 1페이지
     page = request.GET.get('page')
     page_obj = paginator.get_page(page) 
-    
-
-    try:
+    try: # try except 문 사용해서 오류코드가 나왔을때도 작동되게 함
         posting_list = paginator.page(page)
-    except PageNotAnInteger:
+    except PageNotAnInteger: #페이지가 범위를 넘어가면 1번 페이지
         posting_list = paginator.page(1)
-    except EmptyPage:
+    except EmptyPage: # 없는페이지를 보일때 마지막 페이지를 보임
         posting_list = paginator.page(paginator.num_pages)
 
     context = {

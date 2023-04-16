@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from django.contrib.auth import views as auth_views
+# from django.contrib.auth import views as auth_views # 없어도 되는거
 
 
 urlpatterns = [
