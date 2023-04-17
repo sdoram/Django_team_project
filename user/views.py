@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from posting.models import Posting
+from comment.models import Comment
 
 
 def signup(request):
@@ -108,7 +109,8 @@ def mypage(request):
         if request.method == 'GET':
             # .order_by('-create_at')은 정렬하기
             postings = Posting.objects.filter(username=user).order_by('-create_at')
-            return render(request, 'user/mypage.html', {'user': user, 'postings': postings})
+            comments = Comment.objects.filter(username=user).order_by('-create_at')
+            return render(request, 'user/mypage.html', {'user': user, 'postings': postings, 'comments': comments})
         if request.method == 'POST':
             username = request.POST.get('username', None)
             # name = request.POST.get('name', None)

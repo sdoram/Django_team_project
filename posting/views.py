@@ -3,11 +3,10 @@ from django.contrib.auth.decorators import login_required
 from .models import Posting
 from comment.models import Comment
 from user.models import UserModel
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger # 페이지 페이징 처리 모듈
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger  # 페이지 페이징 처리 모듈
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
-
 
 
 # 개시글 상세 보기
@@ -16,12 +15,12 @@ def posting_detail_view(request, post_id):
     comment_list = Comment.objects.order_by('-create_at')
     context = {
         'posting': posting,
-        'comment_list' : comment_list
+        'comment_list': comment_list
     }
     return render(request, 'posting/posting_detail.html', context)
 
 
-#게시글 리스트
+# 게시글 리스트
 def posting_list(request, category=None):
     if category:
         # 모델에서 choices 옵션으로 정의한 값('codereview')으로 필터링합니다.
@@ -30,10 +29,9 @@ def posting_list(request, category=None):
     else:
         posting_list = Posting.objects.all().order_by('-create_at')
 
-    paginator = Paginator(posting_list, 6)  
+    paginator = Paginator(posting_list, 6)
     page = request.GET.get('page')
-    page_obj = paginator.get_page(page) 
-    
+    page_obj = paginator.get_page(page)
 
     try:
         posting_list = paginator.page(page)
@@ -42,16 +40,25 @@ def posting_list(request, category=None):
     except EmptyPage:
         posting_list = paginator.page(paginator.num_pages)
 
+    image_src = {
+            'codereview': 'https://i.postimg.cc/tgb4znKW/image.png',
+            'course': 'https://i.postimg.cc/3R7BFWwq/image.png',
+            'coding_study': 'https://i.postimg.cc/y8Zk6PTm/image.png',
+            'study': 'https://i.postimg.cc/GmWDYjJQ/image.png',
+            'free_board': 'https://i.postimg.cc/ydNbRBTc/image.png',
+        }
+
     context = {
         'title': 'LIST',
         'posting_list': posting_list,
         'category': category,
-        'page_obj' : page_obj
+        'page_obj': page_obj,
+        'image_src': image_src,
     }
 
+
+
     return render(request, 'posting/posting_list.html', context)
-
-
 
 
 # 게시글 작성
@@ -75,14 +82,11 @@ def create_post(request):
         return render(request, 'posting/posting_admin.html')
 
 
-
-
-
-
 # 게시글 수정
 @login_required(login_url='login')
 def update_post(request, post_id):
-    posting = get_object_or_404(Posting, post_id=post_id, username=request.user)
+    posting = get_object_or_404(
+        Posting, post_id=post_id, username=request.user)
 
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -115,14 +119,17 @@ def delete_post(request, pk):
 def posting_admin(request):
     return render(request, 'posting/posting_admin.html')
 
-# return 값 수정 
+# return 값 수정
+
+
 @csrf_exempt
 def api_create_post(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         main_content = request.POST.get('main_content')
         category = request.POST.get('category')
-        post = Posting(title=title, main_content=main_content, category=category)
+        post = Posting(title=title, main_content=main_content,
+                       category=category)
         post.save()
         response_data = {'success': True, 'post_id': post.post_id}
         return JsonResponse(response_data)
@@ -133,7 +140,6 @@ def api_create_post(request):
         response_data = {'success': False, 'message': 'Invalid request method'}
         return JsonResponse(response_data, status=400)
 
-    
 
 @csrf_exempt
 def api_update_post(request, post_id):
@@ -142,7 +148,8 @@ def api_update_post(request, post_id):
         main_content = request.POST.get('main_content')
         category = request.POST.get('category')
 
-        post = get_object_or_404(Posting, post_id=post_id, user_id=request.user)
+        post = get_object_or_404(
+            Posting, post_id=post_id, user_id=request.user)
         post.title = title
         post.main_content = main_content
         post.category = category
@@ -155,6 +162,3 @@ def api_update_post(request, post_id):
             'category': post.category
         }
         return JsonResponse(data)
-
-
-
