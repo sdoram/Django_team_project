@@ -16,3 +16,20 @@ def main_view(request):
             user = request.user
             postings = Posting.objects.filter(username=user).order_by('-create_at')
             return render(request, 'main.html', {'user': user, 'postings': postings})
+    
+    #     if # 카테고리별로 게시글 리스트 보이게
+    # codereview_posts = Posting.objects.filter(category='codereview')
+    # course_posts = Posting.objects.filter(category='course')
+    # coding_study_posts = Posting.objects.filter(category='coding_study')
+    # study_posts = Posting.objects.filter(category='study')
+    # free_board_posts = Posting.objects.filter(category='free_board')
+
+    # context = {
+    #     'codereview_posts':codereview_posts,
+    #     'course_posts':course_posts,
+    #     'coding_study_posts':coding_study_posts,
+    #     'study_posts':study_posts,
+    #     'free_board_posts':free_board_posts,
+    # }
+
+    # return render(request, 'main.html', context)

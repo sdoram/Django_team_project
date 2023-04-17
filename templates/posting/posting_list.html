@@ -35,7 +35,39 @@
             font-weight: bold;
         }
     </style>
+    <!-- <script>
+        $(document).ready(function () {
+            $('.category-box').click(function () {
+                /*event.preventDefault();*/
+                var newImageSrc = $(this).data('image')
+                $('#category_img').attr('src', newImageSrc)
+            })
+        })
+    </script> -->
     <div class="container">
+        <div>
+        {% if category == 'codereview' %}
+        {% with img_src=image_src.codereview %}
+        <img src="{{ img_src }}" alt="categoryimg" id="category_img">
+        {% endwith %}
+        {% elif category == 'course' %}
+        {% with img_src=image_src.course %}
+        <img src="{{ img_src }}" alt="categoryimg" id="category_img">
+        {% endwith %}
+        {% elif category == 'coding_study' %}
+        {% with img_src=image_src.coding_study %}
+        <img src="{{ img_src }}" alt="categoryimg" id="category_img">
+        {% endwith %}
+        {% elif category == 'free_board' %}
+        {% with img_src=image_src.free_board %}
+        <img src="{{ img_src }}" alt="categoryimg" id="category_img">
+        {% endwith %}
+        {% elif category == 'study' %}
+        {% with img_src=image_src.study %}
+        <img src="{{ img_src }}" alt="categoryimg" id="category_img">
+        {% endwith %}
+        {% endif %}
+        </div>
         <h2>게시글 목록{% if category %} - {{ category }}{% endif %}</h2>
         <br><br>
         <table class="table">
