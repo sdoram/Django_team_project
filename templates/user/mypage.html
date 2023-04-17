@@ -169,12 +169,10 @@
             <!--님이 작성한 댓글 전체보기 >-->
             <div>
                 <a href="/user/myposting">{{ user.username }}님이 작성한 댓글 전체보기 > </a>
-                {% if comments %}
+                {% if postings %}
                 <ul>
-
-                    {% for comment in comments|slice:'3' %}
-                    <li><b><a style="color: black" href="{% url 'post_detail' posting.post_id %}">{{ comments.comment_content }}</a></b></li>
-
+                    {% for posting in postings|slice:'3' %}
+                    <li><b><a style="color: black" href="{% url 'posting_detail' posting.posting_id %}">{{ posting.title }}</a></b></li>
                     {% endfor %}
                 </ul>
                 {% else %}
