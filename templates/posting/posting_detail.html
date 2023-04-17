@@ -34,6 +34,14 @@
           <p class="card-text">{{ posting.category }}</p>
         </div>
       </div>
+        <a class="btn btn-secondary" href="{% url 'posting_list' %}">목록으로</a>
+        {% if user.is_authenticated and user == posting.username %}
+        <a class="btn btn-secondary" href="{% url 'update_post' posting_id=posting.posting_id %}">수정하기</a>
+        <form action="{% url 'delete_post' pk=posting.posting_id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <input type="submit" value="삭제하기" class="btn btn-secondary">
+        </form>
+        {% endif %}
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">댓글</h3>

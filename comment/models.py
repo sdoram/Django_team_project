@@ -10,7 +10,7 @@ class Comment(models.Model):
     username = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     posting = models.ForeignKey(Posting, on_delete=models.CASCADE, null=True)
     update_at = models.DateField(auto_now=True)
-    create_at = models.DateField(auto_now_add=True)
+    create_at = models.DateTimeField(auto_now_add=True)
     comment_content = models.TextField(null=True)
     
     def save(self, *args, **kwargs):
