@@ -167,12 +167,12 @@
             <hr style="border: solid 1px gray; width: 80%; margin-left: 60px; margin-top: 2px;">
             
             <!--님이 작성한 댓글 전체보기 >-->
-            <div>
+            <div class="mypage_write">
                 <a href="/user/mypage">{{ user_info.username }}님이 작성한 댓글 > </a>
                     {% if comments %}
                         <ul>
                             {% for comment in comments|slice:'3' %}
-                                <li><b>{{ comment.comment_content }}</b></li>
+                                <li><b><a href="{% url 'posting_detail' comment.posting.posting_id %}">{{ comment.comment_content }}</a></b></li>
                             {% endfor %}
                         </ul>
                     {% else %}

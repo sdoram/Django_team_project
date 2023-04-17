@@ -98,27 +98,28 @@ def edit(request):
 
 
 def mypage(request):
-        user = request.user
-        if request.method == 'GET':
-            # .order_by('-create_at')은 정렬하기
-            postings = Posting.objects.filter(username=user).order_by('-create_at')
-            comments = Comment.objects.filter(username=user).order_by('-create_at')
-            return render(request, 'user/mypage.html', {'user': user, 'postings': postings, 'comments': comments})
-        if request.method == 'POST':
-            username = request.POST.get('username', None)
-            # name = request.POST.get('name', None)
-            # gender = request.POST.get('gender', None)
-            # email = request.POST.get('email', None)
-            if username:
-                user.username = username
-                # user.name = name
-                # user.gender = gender
-                # user.email = email
-                user.save()
-                return HttpResponse('성공')
-            else:
-                return HttpResponse('실패')
-            
+    if not request.user.is_authenticated:
+        return redirect("/main")
+    user = request.user
+    if request.method == 'GET':
+        # .order_by('-create_at')은 정렬하기
+        postings = Posting.objects.filter(username=user).order_by('-create_at')
+        comments = Comment.objects.filter(username=user).order_by('-create_at')
+        return render(request, 'user/mypage.html', {'user': user, 'postings': postings, 'comments': comments})
+    if request.method == 'POST':
+        username = request.POST.get('username', None)
+        # name = request.POST.get('name', None)
+        # gender = request.POST.get('gender', None)
+        # email = request.POST.get('email', None)
+        if username:
+            user.username = username
+            # user.name = name
+            # user.gender = gender
+            # user.email = email
+            user.save()
+            return HttpResponse('성공')
+        else:
+            return HttpResponse('실패')
 
 
 def myposting(request):
@@ -136,7 +137,9 @@ def search_info(request):
         postings = Posting.objects.filter(username=user_info).order_by('-create_at')
         # comments create_at DateTimeField로 교체해야함
         comments = Comment.objects.filter(username=user_info).order_by('-create_at')
-        return render(request, 'user/user_info.html', {'user_info': user_info, 'postings': postings, 'comments':comments})
+        return render(request, 'user/user_info.html',
+                      {'user_info': user_info, 'postings': postings, 'comments': comments})
     # next로 페이지 돌아올 때도 search_user 정보가 없어서 에러 발생함
     except Http404:
-        return HttpResponse(f"<script>alert('{search_user}은 존재하지 않는 유저입니다! or next로 돌아오면서 search_user값이 없어서 에러 발생');location.href='/main';</script>")
+        return HttpResponse(
+            f"<script>alert('{search_user}은 존재하지 않는 유저입니다! or next로 돌아오면서 search_user값이 없어서 에러 발생');location.href='/main';</script>")
