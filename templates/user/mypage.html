@@ -168,18 +168,16 @@
             
             <!--님이 작성한 댓글 전체보기 >-->
             <div>
-                <a href="/user/myposting">{{ user.username }}님이 작성한 댓글 전체보기 > </a>
-                {% if comments %}
-                <ul>
-
-                    {% for comment in comments|slice:'3' %}
-                    <li><b><a style="color: black" href="{% url 'post_detail' posting.post_id %}">{{ comments.comment_content }}</a></b></li>
-
-                    {% endfor %}
-                </ul>
-                {% else %}
-                <p>작성한 글이 없습니다.</p>
-                {% endif %}
+                <a href="/user/mypage">{{ user_info.username }}님이 작성한 댓글 > </a>
+                    {% if comments %}
+                        <ul>
+                            {% for comment in comments|slice:'3' %}
+                                <li><b>{{ comment.comment_content }}</b></li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>작성한 글이 없습니다.</p>
+                    {% endif %}
             </div>
 
         </div>
