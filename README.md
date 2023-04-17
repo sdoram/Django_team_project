@@ -33,6 +33,27 @@
 ## 로그인 , 회원가입 :
 ### 사용자에게 정보를 입력받아 회원가입을 할 수 있고 중복된 유저 id를 사용하지 못히게 만듦 email, 성별은 선택사항으로 입력값이 없어도 가입이 가능
 
+## 가장 마음에 드는 코드
+### 김세만 : 
+```python
+def search_info(request):
+    try:
+        # html 검색 입력값 가져 오기
+        search_user = request.GET.get('search_user')
+        user_info = get_object_or_404(UserModel, username=search_user)
+        postings = Posting.objects.filter(username=user_info).order_by('-create_at')
+        comments = Comment.objects.filter(username=user_info).order_by('-create_at')
+        return render(request, 'user/user_info.html', {'user_info': user_info, 'postings': postings, 'comments':comments})
+    except Http404:
+        return HttpResponse(f"<script>alert('{search_user}은 존재하지 않는 유저입니다! or next로 돌아오면서 search_user값이 없어서 에러 발생');location.href='/main';</script>")
+```
+이해 가능한 코드로  유저 검색이라는 새로운 기능을 만들어서 마음에 듭니다.
+
+### 구병진 :
+### 공민영 :
+### 임재훈 :
+### 장한울 :
+
 
 # 추가할거 있으면 추가해주세요 !!
 
