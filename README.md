@@ -50,12 +50,86 @@ def search_info(request):
 이해 가능한 코드로  유저 검색이라는 새로운 기능을 만들어서 마음에 듭니다.
 
 ### 구병진 :
+```python
+# 게시글 수정 
+@login_required(login_url='login')
+def update_post(request, post_id):
+    posting = get_object_or_404(Posting, post_id=post_id, username=request.user)
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        main_content = request.POST.get('main_content')
+        category = request.POST.get('category')
+
+        posting.title = title
+        posting.main_content = main_content
+        posting.category = category
+        posting.save()
+
+        return redirect(reverse('posting_detail', kwargs={'post_id': post_id}))
+    else:
+        context = {'posting': posting}
+        return render(request, 'posting/posting_admin.html', context)
+```
+데코레이터 ```python@login_required(login_url='login')```을 사용하여 해당 view 함수가 실행되기 전에 사용자가 로그인했는지 확인합니다. 만약 로그인하지 않았다면 'login' URL로 리디렉션합니다.
 ### 공민영 :
+```python
+<!--님이 작성한 글 전체보기 >-->
+            <div class="mypage_write">
+                <!--<a href="/user/mypage/{user_id}">내가 작성한 글 > </a>-->
+                <a href="/user/myposting">{{ user.username }}님이 작성한 글 전체보기 > </a>
+                {% if postings %}
+                <ul>
+                    {% for posting in postings|slice:'3' %}
+                    <li><b><a style="color: black" href="{% url 'posting_detail' posting.posting_id %}">{{ posting.title }}</a></b></li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>작성한 글이 없습니다.</p>
+                {% endif %}
+            </div>
+            
+            
+def myposting(request):
+    user = request.user
+    if request.method == 'GET':
+        postings = Posting.objects.filter(username=user)
+        return render(request, 'user/myposting.html', {'user': user, 'postings': postings})
+```
+로그인한 사용자가 작성한 글을 모아 볼 수 있는 기능입니다.
 ### 임재훈 :
+```python
+   if category:
+        # 모델에서 choices 옵션으로 정의한 값('codereview')으로 필터링합니다.
+        posting_list = Posting.objects.filter(
+            category=category.lower()).order_by('-create_at') # 카테고리별로 시간 내림차순 정렬
+    else:
+        posting_list = Posting.objects.all().order_by('-create_at') # 전체보기 시간 내림차순 정렬
+
+    paginator = Paginator(posting_list, 6)  #게시글 6개가 1페이지
+    page = request.GET.get('page')
+    page_obj = paginator.get_page(page) 
+    try: # try except 문 사용해서 오류코드가 나왔을때도 작동되게 함
+        posting_list = paginator.page(page)
+    except PageNotAnInteger: #페이지가 범위를 넘어가면 1번 페이지
+        posting_list = paginator.page(1)
+    except EmptyPage: # 없는페이지를 보일때 마지막 페이지를 보임
+        posting_list = paginator.page(paginator.num_pages)
+
+    context = {
+        'title': 'LIST',
+        'posting_list': posting_list,
+        'category': category,
+        'page_obj' : page_obj
+    }
+
+    return render(request, 'posting/posting_list.html', context)
+```
+pagonator 모듈을 사용해서 페이징처리를 할 수 있던게 제일 마음 들었습니다
 ### 장한울 :
 
 
-# 추가할거 있으면 추가해주세요 !!
+
 
 
 
