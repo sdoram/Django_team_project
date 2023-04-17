@@ -77,6 +77,26 @@
               </form>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      {% if user.is_authenticated and user == posting.username %}
+    <div class="card">
+        <div class="card-body">
+            <a class="btn btn-secondary" href="{% url 'update_post' posting_id=posting.posting_id %}">수정하기</a>
+            {% for comment in comment_list %}
+                <form action="{% url 'delete_comment' comment_id=comment.comment_id %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="comment_id" value="{{ comment.comment_id }}">
+                    <input type="submit" value="삭제" class="btn btn-secondary btn-sm" style="float: right;">
+                </form>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+  </div>
+</div>
 </div>
 {% endblock %}
 
