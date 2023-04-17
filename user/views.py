@@ -98,28 +98,27 @@ def edit(request):
 
 
 def mypage(request):
-    if not request.user.is_authenticated:
-        return redirect("/main")
-    # 로그인 체크 후 돌려보내는 조건문 추가해야함
-    user = request.user
-    if request.method == 'GET':
-        # .order_by('-create_at')은 정렬하기
-        postings = Posting.objects.filter(username=user).order_by('-create_at')
-        return render(request, 'user/mypage.html', {'user': user, 'postings': postings})
-    if request.method == 'POST':
-        username = request.POST.get('username', None)
-        # name = request.POST.get('name', None)
-        # gender = request.POST.get('gender', None)
-        # email = request.POST.get('email', None)
-        if username:
-            user.username = username
-            # user.name = name
-            # user.gender = gender
-            # user.email = email
-            user.save()
-            return HttpResponse('성공')
-        else:
-            return HttpResponse('실패')
+        user = request.user
+        if request.method == 'GET':
+            # .order_by('-create_at')은 정렬하기
+            postings = Posting.objects.filter(username=user).order_by('-create_at')
+            comments = Comment.objects.filter(username=user).order_by('-create_at')
+            return render(request, 'user/mypage.html', {'user': user, 'postings': postings, 'comments': comments})
+        if request.method == 'POST':
+            username = request.POST.get('username', None)
+            # name = request.POST.get('name', None)
+            # gender = request.POST.get('gender', None)
+            # email = request.POST.get('email', None)
+            if username:
+                user.username = username
+                # user.name = name
+                # user.gender = gender
+                # user.email = email
+                user.save()
+                return HttpResponse('성공')
+            else:
+                return HttpResponse('실패')
+            
 
 
 def myposting(request):
