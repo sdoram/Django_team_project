@@ -33,7 +33,7 @@
         <button type="submit" class="btn btn-light">작성</button>
         {% endif %}
         {% if posting %}
-        <button type="button" class="btn btn-dark" id="delete-post-btn" onclick="deletePost('{{ posting.post_id }}')">삭제</button>
+        <button type="button" class="btn btn-dark" id="delete-post-btn" onclick="deletePost('{{ posting.posting_id }}')">삭제</button>
         {% endif %}
         <!-- 글 작성 취소 버튼 추가 -->
         {% if not posting %}

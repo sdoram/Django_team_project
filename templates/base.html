@@ -80,73 +80,77 @@
             margin-left: 2px;
             margin-bottom: 2px;
         }
+        .search_bar {
+            margin-right: 100px;
+        }
 
     </style>
 </head>
 
 <body>
-    <div class="nav_cont">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container">
-                <a class="navbar-brand" href="/main">
-                    <h1>임금님귀는 당나귀 귀</h1>
-                </a>
-                <a href="/main"><img id="container_img" src="https://i.postimg.cc/T16pDXNT/1.png" alt="로고"></a>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                        </li>
-                    </ul>
+<div class="nav_cont">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="/main"><h1>임금님귀는 당나귀 귀</h1></a>
+            <a href="/main"><img id="container_img" src="https://i.postimg.cc/T16pDXNT/1.png" alt="로고"></a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                    </li>
+                </ul>
+            </div>
+            <form class="form-area search_bar" method="get" action='{% url 'user:search_info' %}'>
+                <div class=" form-group mt-2 mb-2">
+                    <input type="text" class="form-control" placeholder="유저 검색" id="search_user" name="search_user">
                 </div>
-
-                <form class="form-inline my-2 my-lg-0">
-                    {% if not user.is_authenticated %}
-                    <ul class="navbar-nav mr-auto">
-                        {% if not user.authenticated %}
-                        <li class="nav-item active">
-                            <button type="button"
+            </form>
+            {% if not user.is_authenticated %}
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <button type="button"
                                 onclick="location.href = '{% url 'user:signup' %}?next={{ request.path }}'"
                                 class="btn btn-secondary">회원가입
-                            </button>
-                        </li>
-                        <li class="nav-item active">
-                            <button type="button"
+                        </button>
+                    </li>
+                    <li class="nav-item active">
+                        <button type="button"
                                 onclick="location.href = '{% url 'user:login' %}?next={{ request.path }}'"
                                 class="btn btn-secondary">로그인
-                            </button>
-                        </li>
-                        {% else %}
-                        {# next 테스트용 버튼 나중에 삭제하기 #}
-                        <button type="button" onclick="location.href = '/user/mypage'" class="btn btn-secondary">마이페이지
                         </button>
-                        <button type="button" onclick="location.href = '{% url 'user:login' %}?next=/posting/create'"
+                    </li>
+                    <button type="button" onclick="location.href = '{% url 'user:login' %}?next=/posting/create'"
                             class="btn btn-secondary">글쓰기
-                        </button>
-                        {% endif %}
-                    </ul>
-                    {% else %}
-                    <h3>{{ user.username }} 님 반갑습니다.</h3>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <button type="button"
+                    </button>
+                </ul>
+            {% else %}
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <h4>{{ user.username }} 님 반갑습니다.</h4>
+                        <button type="button"
                                 onclick="location.href = '{% url 'user:logout' %}?next={{ request.path }}'"
                                 class="btn btn-secondary">로그아웃
-                            </button>
-                            <button type="button" onclick="location.href = '/user/mypage'" class="btn btn-secondary">
-                                마이페이지
-                            </button>
-                            <button type="button" onclick="location.href = '/posting/create'" class="btn btn-secondary">
-                                글쓰기
-                            </button>
-                        </li>
-                    </ul>
-                    {% endif %}
-                </form>
-            </div>
-        </nav>
+                        </button>
+                        <button type="button" onclick="location.href = '/user/mypage'"
+                                class="btn btn-secondary">
+                            마이페이지
+                        </button>
+                        <button type="button" onclick="location.href = '/posting/create'"
+                                class="btn btn-secondary">
+                            글쓰기
+                        </button>
+                    </li>
+                </ul>
+            {% endif %}
+            </form>
+        </div>
+        
     </div>
-    <!-- 네비 -->
+    </nav>
+
+</div>
+</div>
+ <!-- 네비 -->
     <div class="nav_main">
         <div class="category-box"><b><a id="nav_text{% if not category %} {% endif %}" href="{% url 'posting_list' %}">전
                     체 목 록</a></b></div>
@@ -174,13 +178,10 @@
         <div class="category-box study">
             <b><a id="nav_text{% if category == 'study' %} {% endif %}"
                  href="{% url 'posting_list' 'study' %}">스 터 디</a></b>
-        </div>
-        
-    </div>
-    </nav>
-    <div class="container">
-        {% block content %}{% endblock %}
-    </div>
+</nav>
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
 </body>
 
 </html>
