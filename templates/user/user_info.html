@@ -128,29 +128,25 @@
             <div class="mypage_profile_img">
 
             </div>
-            <div class="mypage_Modify_btn">
-                <button type="button" onclick="location.href = '/user/edit'" class="btn btn-secondary">수정
-                </button>
-            </div>
 
             <div style="margin-bottom: 20px; font-size: 20px; font-weight: bold;">
-                {{ user.username }}
+                {{ user_info.username }}
             </div>
             <div>
-                {{ user.name }}
+                {{ user_info.name }}
             </div>
             <div>
-                {{ user.gender }}
+                {{ user_info.gender }}
             </div>
             <div>
-                {{ user.email }}
+                {{ user_info.email }}
             </div>
         </div>
         <div class="mypage_write_div">
 
             <!--님이 작성한 글 전체보기 >-->
             <div class="mypage_write">
-                <a href="/user/myposting">{{ user.username }}님이 작성한 글 전체보기 > </a>
+                <a >{{ user_info.username }}님이 작성한 글 > </a>
                 {% if postings %}
                 <ul>
                     {% for posting in postings|slice:'3' %}
@@ -167,11 +163,11 @@
 
             <!--님이 작성한 댓글 전체보기 >-->
             <div>
-                <a href="/user/mypage">{{ user_info.username }}님이 작성한 댓글 > </a>
+                <a >{{ user_info.username }}님이 작성한 댓글 > </a>
                     {% if comments %}
                         <ul>
                             {% for comment in comments|slice:'3' %}
-                                <li>{{ comment.comment_content }}</li>
+                                <li><b><a href="{% url 'posting_detail' comment.posting.posting_id %}">{{ comment.comment_content }}</a></b></li>
                             {% endfor %}
                         </ul>
                     {% else %}
