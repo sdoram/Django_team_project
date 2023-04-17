@@ -14,7 +14,6 @@ from django.urls import reverse
 def posting_detail_view(request, posting_id):
     posting = get_object_or_404(Posting, posting_id=posting_id)
     comment_list = posting.comment_set.order_by('-create_at') # 댓글 리스트 시간역순으로 모아보기
-    
 
     context = {
         'posting': posting,
