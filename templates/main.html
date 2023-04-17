@@ -117,7 +117,8 @@
                                     <li>
                                     <div class="posting_list_div">
 
-                                        <a id="posting_list_id">{{ posting.title }}</a>
+                                        <b><a id="posting_list_id"
+                                              href="{% url 'posting_detail' posting.posting_id %}">{{ posting.title }}</a></b>
                                     </div>
                                     <div class="posting_id_div">
                                         <span class="posting_id">{{ posting.username }}</span>
@@ -148,7 +149,8 @@
                                     <li>
                                     <div class="posting_list_div">
 
-                                        <a id="posting_list_id">{{ posting.title }}</a>
+                                        <b><a id="posting_list_id"
+                                              href="{% url 'posting_detail' posting.posting_id %}">{{ posting.title }}</a></b>
                                     </div>
                                     <div class="posting_id_div">
                                         <span class="posting_id">{{ posting.username }}</span>
@@ -178,7 +180,8 @@
                                     <li>
                                     <div class="posting_list_div">
 
-                                        <a id="posting_list_id">{{ posting.title }}</a>
+                                        <b><a id="posting_list_id"
+                                              href="{% url 'posting_detail' posting.posting_id %}">{{ posting.title }}</a></b>
                                     </div>
                                     <div class="posting_id_div">
                                         <span class="posting_id">{{ posting.username }}</span>
@@ -208,7 +211,8 @@
                                     <li>
                                     <div class="posting_list_div">
 
-                                        <a id="posting_list_id">{{ posting.title }}</a>
+                                        <b><a id="posting_list_id"
+                                              href="{% url 'posting_detail' posting.posting_id %}">{{ posting.title }}</a></b>
                                     </div>
                                     <div class="posting_id_div">
                                         <span class="posting_id">{{ posting.username }}</span>
@@ -237,8 +241,8 @@
                                 {% if posting.category == 'free_board' %}
                                     <li>
                                     <div class="posting_list_div">
-
-                                        <a id="posting_list_id">{{ posting.title }}</a>
+                                        <b><a id="posting_list_id"
+                                              href="{% url 'posting_detail' posting.posting_id %}">{{ posting.title }}</a></b>
                                     </div>
                                     <div class="posting_id_div">
                                         <span class="posting_id">{{ posting.username }}</span>
